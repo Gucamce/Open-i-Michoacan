@@ -1,0 +1,33 @@
+
+#encabezado{
+    height: 105px;
+}
+#fondo{
+    display: flex;
+    height: 605px;
+    position: relative;
+}
+#arbol{
+    margin-top: 15px;
+    position: relative;
+    margin-left: 45px;
+    box-shadow: 4px 7px 6px gray;
+    border-radius: 5px;
+    text-align: center;
+    justify-items: center;
+    
+}
+h5{
+    margin-top: 30px;
+    color: #8f4545;
+}
+#contenido{
+    margin-top: 15px;
+    margin-left: 15px;
+    box-shadow: 4px 7px 6px gray;
+    border-radius: 5px;
+
+}
+#arbol_documentos{
+    margin-top: 30px;
+}
