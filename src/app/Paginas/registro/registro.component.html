@@ -1,1 +1,31 @@
-<p>registro works!</p>
+<body>
+    <div class="container">
+        <h4>Registro de Usuario</h4>
+        <div class="row">
+        <input type="text" placeholder="Nombre...">
+        <input type="text" placeholder="Apellido...">
+        <input type="email" placeholder="Usuario...">
+        <input type="password" placeholder="Contraseña...">
+        <input type="password" placeholder="Confirmar Contraseña...">
+    </div>
+
+    <div>
+        Rol de usuario:
+        <select>
+            <option value="">Selecciona una opcion</option>
+            <option value="admin">Administrador</option>
+            <option value="auditor">Auditor</option>
+            <option value="cajero">Cajero</option>
+          </select>
+    </div>
+    <div>
+        Acceso:
+        <mat-checkbox style="color: black;">Total</mat-checkbox>
+        <mat-checkbox style="color: black;">Cajero</mat-checkbox>
+    </div>
+    <div>  
+        <button type="button" class="btn btn-secondary btn-sm">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-sm">Registrar</button>
+    </div>
+    </div>
+</body>

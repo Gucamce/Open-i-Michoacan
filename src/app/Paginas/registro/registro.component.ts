@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [],
+  imports: [
+    MatCheckboxModule
+  ],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })

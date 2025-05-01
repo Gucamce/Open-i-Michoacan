@@ -1,0 +1,70 @@
+#cabecera {
+    height: 110px;
+}
+
+#cuerpo {
+    display: flex;
+    margin-top: 10px;
+    height: 80%;
+    justify-content: center;
+}
+
+#contenedor-document {
+    border-radius: 10px;
+    margin-left: 10px;
+    height: 100%;
+    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+}
+
+#arbol {
+    border-radius: 10px;
+    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+}
+
+#arbol-contenido{
+    margin-top: 50px;
+    text-align: center;
+}
+
+#arbol_documentos{
+    margin-top: 35px;
+    text-align: center;
+}
+
+#dash {
+    margin-top: 20px;
+}
+
+#documentos {
+    margin-left: 40px;
+    height: 500px;
+    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+    border-radius: 10px;
+}
+
+#visor {
+    margin-left: 20px;
+    height: 500px;
+    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+    border-radius: 10px;
+}
+
+#tabla {
+    height: 70%;
+    width: 100%;
+}
+
+.mat-mdc-table {
+    width: 50%;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.mat-column-name {
+    height: 10px;
+}
+
+mat-form-field {
+    margin-top: 10px;
+    width: 100%;
+}

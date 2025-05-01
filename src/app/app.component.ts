@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoginComponent } from "./Paginas/login/login.component";
 import { NavbarComponent } from './Paginas/navbar/navbar.component';
 import { FooterComponent } from './Paginas/footer/footer.component';
 

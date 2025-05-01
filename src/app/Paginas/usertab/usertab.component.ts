@@ -1,16 +1,17 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule} from '@angular/material/tree';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { DummiesService } from '../../Servicios/dummies.services';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
-import { OfitabComponent } from '../ofitab/ofitab.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RegistroComponent } from '../registro/registro.component';
+
+export interface ExampleTab {
+  label: string;
+  content: string;
+}
 
 export interface UserData {
   id: string;
@@ -53,35 +54,39 @@ const NAMES: string[] = [
   'Elizabeth',
 ];
 
-
-
-
 @Component({
-  selector: 'app-inicio',
+  selector: 'app-usertab',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     MatFormFieldModule,
-    MatInputModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule,
+    MatInputModule,
     FormsModule,
-    OfitabComponent
-    ],
-  templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.css'
+    MatDialogModule,
+  ],
+  templateUrl: './usertab.component.html',
+  styleUrl: './usertab.component.css'
 })
-export class InicioComponent  implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
+export class UsertabComponent implements AfterViewInit {
+  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit', 'editar', 'eliminar'];
   dataSource: MatTableDataSource<UserData>;
+
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-input: any;
-  constructor() {
-    // Create 100 users
-    const users = Array.from({ length: 100 }, (__, k) => createNewUser(k + 1));
-    this.dataSource = new MatTableDataSource(users);
+
+
+  constructor (private _matDialog:MatDialog){
+
+    const users = Array.from ({ length: 100}, (__, k) => createNewUser(k+1));
+    this.dataSource = new MatTableDataSource(users)
+
+  }
+  editUsuario(){
+    this._matDialog.open(RegistroComponent)
   }
 
   ngAfterViewInit() {
@@ -116,6 +121,3 @@ function createNewUser(id: number): UserData {
     fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
   };
 }
-
-
-

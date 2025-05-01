@@ -1,36 +1,21 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule} from '@angular/material/tree';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { DummiesService } from '../../Servicios/dummies.services';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { OfitabComponent } from '../ofitab/ofitab.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export interface UserData {
   id: string;
   name: string;
   progress: string;
-  fruit: string;
 }
 
 
 /** Constants used to fill up our data base. */
-const FRUITS: string[] = [
-  'blueberry',
-  'lychee',
-  'kiwi',
-  'mango',
-  'peach',
-  'lime',
-  'pomegranate',
-  'pineapple',
-];
+
 const NAMES: string[] = [
   'Maia',
   'Asher',
@@ -53,31 +38,28 @@ const NAMES: string[] = [
   'Elizabeth',
 ];
 
-
-
-
 @Component({
-  selector: 'app-inicio',
+  selector: 'app-ofitab',
   standalone: true,
   imports: [
     MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    FormsModule,
-    OfitabComponent
-    ],
-  templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.css'
+        MatInputModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        FormsModule,
+        MatCheckboxModule,
+  ],
+  templateUrl: './ofitab.component.html',
+  styleUrl: './ofitab.component.css'
 })
-export class InicioComponent  implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
+
+export class OfitabComponent implements AfterViewInit {
+  displayedColumns: string[] = ['id', 'descripcion','btningresar', 'check'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-input: any;
   constructor() {
     // Create 100 users
     const users = Array.from({ length: 100 }, (__, k) => createNewUser(k + 1));
@@ -105,17 +87,9 @@ function createNewUser(id: number): UserData {
     NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
     ' ' +
     NAMES[Math.round(Math.random() * (NAMES.length - 1))];
-  const fruit =
-    FRUITS[Math.round(Math.random() * (FRUITS.length - 1))] +
-    ' ' +
-    FRUITS[Math.round(Math.random() * (FRUITS.length - 1))];
   return {
     id: id.toString(),
     name: name,
     progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
   };
 }
-
-
-
