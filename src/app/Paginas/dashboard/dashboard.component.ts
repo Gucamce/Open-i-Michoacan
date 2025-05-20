@@ -17,7 +17,7 @@ interface TreeNode {
   link?: string;
   children?: TreeNode[];
   documentos?: { name: string, link: string, methodPay: string }[];
-  
+
 }
 
 interface ArbolNode {
@@ -46,6 +46,7 @@ interface ArbolNode {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
+
 export class DashboardComponent implements OnInit {
 
   oficinaSeleccionada: any;
@@ -150,24 +151,24 @@ export class DashboardComponent implements OnInit {
     console.log('Nodo clickeado:', node);
     console.log('Nivel:', node.level);
     console.log('Documentos en nodo:', original?.documentos);
-    
-    
-    
+
+
+
     //Verifica si el nodo es un documento
     if (node.level === 2 && original?.documentos?.length) {
-    
-    this.documentosSeleccionados = original.documentos.map(doc => ({
-      column: doc.name,
-      link: doc.link,
-      methodPay: doc.methodPay,
-    }));
-    this.dataSourceDocumentos.data = this.documentosSeleccionados;
-} else {
-        this.documentosSeleccionados = [];
-        this.dataSourceDocumentos.data = [];
-        this.pdfSrc = '';
-      }
-  } 
+
+      this.documentosSeleccionados = original.documentos.map(doc => ({
+        column: doc.name,
+        link: doc.link,
+        methodPay: doc.methodPay,
+      }));
+      this.dataSourceDocumentos.data = this.documentosSeleccionados;
+    } else {
+      this.documentosSeleccionados = [];
+      this.dataSourceDocumentos.data = [];
+      this.pdfSrc = '';
+    }
+  }
 
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value;
@@ -178,6 +179,11 @@ export class DashboardComponent implements OnInit {
     const documento = this.documentosSeleccionados.find(doc => doc.column
       === nombreDocumento);
     if (documento) {
+      console.log('link del documento seleccionado:',documento.link);
+      console.log('Nombre del documento seleccionado:', nombreDocumento);
+      console.log('methodPay del documento seleccionado:',documento.methodPay);
+      
+      
       this.pdfSrc = documento.link;
     }
   }
@@ -202,9 +208,9 @@ export class DashboardComponent implements OnInit {
     };
     return meses[numero] || numero;
   }
-  toggleNode(node: ArbolNode): void{
+  toggleNode(node: ArbolNode): void {
     this.treeControl.isExpanded(node)
-    ? this.treeControl.collapse(node)
-    : this.treeControl.expand(node);
+      ? this.treeControl.collapse(node)
+      : this.treeControl.expand(node);
   }
 }

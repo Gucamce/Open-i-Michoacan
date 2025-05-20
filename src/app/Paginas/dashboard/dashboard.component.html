@@ -75,9 +75,17 @@
       <!-- Visor PDF -->
       <div class="col-8" id="visor">
         <ng-container *ngIf="pdfSrc">
-          <ngx-extended-pdf-viewer [src]="pdfSrc" [zoom]="zoom" useBrowserLocale="false" [showPrintButton]="false"
-            [showOpenFileButton]="false" [showZoomButtons]="false" [showRotateButton]="false"
-            [showSecondaryToolbarButton]="false"></ngx-extended-pdf-viewer>
+          <ngx-extended-pdf-viewer
+          [src]="pdfSrc" 
+          [zoom]="zoom" 
+          useBrowserLocale="true"
+          [showPrintButton]="false"
+          [showOpenFileButton]="false" 
+          [showZoomButtons]="false" 
+          [showRotateButton]="false"
+          [showSecondaryToolbarButton]="false"
+          *ngIf="pdfSrc">
+        </ngx-extended-pdf-viewer>
         </ng-container>
       </div>
 
