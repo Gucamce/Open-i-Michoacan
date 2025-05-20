@@ -1,3 +1,5 @@
+
+
 #cabecera {
     height: 110px;
 }
@@ -14,7 +16,7 @@
     border-radius: 10px;
     margin-left: 10px;
     height: 100%;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+    box-shadow: 1px 3px 10px #6A0F49;
 
 }
 
@@ -26,12 +28,28 @@
     overflow-y: auto;
     text-align: center;
     border-radius: 10px;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+    box-shadow: 1px 3px 10px #6A0F49;
 }
 
 #arbol-contenido {
     margin-top: 24px;
     text-align: center;
+}
+
+.titulo-arbolrep{
+    border-bottom: 2px solid #6A0F49;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    padding-bottom: 30px;
+    
+  }
+
+  #componente-tabla {
+    display: block;
+    text-align: center;
+    height: 100%;
+    width: 100%;
 }
 
 .example-tree-invisible {
@@ -49,11 +67,7 @@
     padding-left: 20px;
 }
 
-/*
- * Padding for leaf nodes.
- * Leaf nodes need to have padding so as to align with other non-leaf nodes
- * under the same parent.
- */
+
 .example-tree div[role=group]>.mat-tree-node {
     padding-left: 20px;
 }
@@ -69,12 +83,4 @@
     box-shadow: 1px 3px 10px rgb(205, 205, 205);
     border-radius: 10px;
     text-align: center;
-}
-
-#componente-tabla {
-    display: block;
-    text-align: center;
-    height: 100%;
-    width: 100%;
-
 }

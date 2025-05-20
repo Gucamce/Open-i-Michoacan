@@ -4,14 +4,12 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh; /* Altura total de la pantalla */
+
   
 }
 html,
 body {
     height: 100%;
-}
-
-body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }

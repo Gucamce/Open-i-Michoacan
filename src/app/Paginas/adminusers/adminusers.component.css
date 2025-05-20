@@ -1,4 +1,4 @@
-
+/* 
 #encabezado{
     height: 105px;
 }
@@ -58,3 +58,99 @@ input.example-right-align::-webkit-inner-spin-button {
   display: none;
 }
 
+ */
+
+ /* ==========
+   ESTRUCTURA GENERAL
+   ========== */
+
+#encabezado {
+  height: 105px;
+}
+
+#fondo {
+  position: relative;
+  justify-content: center;
+  margin-top: 2%;
+}
+
+#contenido {
+  display: block;
+  width: 70%;
+  margin: 10px auto;
+  box-shadow: 1px 3px 10px #6A0F49;
+  border-radius: 5px;
+  background-color: white;
+  padding: 20px;
+}
+
+/* ==========
+   COMPONENTES ANGULAR MATERIAL
+   ========== */
+
+mat-form-field {
+  width: 100%;
+  height: 70px;
+}
+
+#openModalBtn {
+  width: 150px;
+  margin-left: 150px;
+  margin-bottom: 25px;
+}
+
+/* ==========
+   CUADROS DE CONTENIDO
+   ========== */
+
+.example-small-box,
+.example-large-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px auto;
+  padding: 1px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.example-small-box {
+  height: 500px;
+  width: 970px;
+}
+
+.example-large-box {
+  height: 500px;
+  width: 980px;
+}
+
+/* ==========
+   INPUTS NUMÉRICOS (ocultar flechas)
+   ========== */
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* ==========
+   TEXTO Y TIPOGRAFÍA
+   ========== */
+
+h5 {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+/* ==========
+   FONDO GENERAL (gris claro con textura)
+   ========== */
+
+body,
+.background {
+  
+  background-repeat: repeat;
+  background-size: contain;
+  background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+}

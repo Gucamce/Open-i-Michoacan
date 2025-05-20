@@ -13,7 +13,7 @@
     border-radius: 10px;
     margin-left: 10px;
     height: 100%;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
+    box-shadow: 1px 3px 10px #6A0F49;
 }
 
 #dash {
@@ -42,20 +42,6 @@
     width: 100%;
 }
 
-.mat-mdc-table {
-    width: 50%;
-    max-height: 500px;
-    overflow: auto;
-}
-
-.mat-column-name {
-    height: 10px;
-}
-
-mat-form-field {
-    margin-top: 10px;
-    width: 100%;
-}
 
 .example-viewport {
     width: 230px;
@@ -66,20 +52,6 @@ mat-form-field {
     height: 100px;
 }
 
-.clickable-row {
-    cursor: pointer;
-  }
-
-  .documento-enlace:hover {
-    color : #084298;
-    text-decoration: underline;
-  }
-  .mat-row:hover .mat-cell {
-    background-color: #e3f2fd; /* Azul claro */
-    cursor: pointer;
-    transition: ease-in-out 0.2s;
-
-  }
   .clickable-row:hover {
     background-color: #e3f2fd; /* celeste claro */
     cursor: pointer;
@@ -90,32 +62,6 @@ mat-form-field {
     display: flex;
     align-items: center;
     padding: 12px;
-  }
-  
-  .pdf-icon {
-    margin-right: 8px;
-  }
-  .nodo-carpeta {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 2px;
-  }
-  
-  .nodo-carpeta:hover {
-    background-color: #f0f0f0;
-    border-radius: 4px;
-  }
-  .mat-tree-node-level-0 {
-    padding-left: 0px !important;
-  }
-  
-  .mat-tree-node-level-1 {
-    padding-left: 50px !important;
-  }
-  
-  .mat-tree-node-level-2 {
-    padding-left: 100px !important;
   }
   
   .tabla-documentos {
@@ -147,7 +93,7 @@ mat-form-field {
   overflow-y: auto;
   text-align: center;
   border-radius: 10px;
-  box-shadow: 1px 3px 10px rgb(205, 205, 205);
+  box-shadow: 1px 3px 10px #6A0F49;
 }
 .arbol-personalizado{
     background: transparent !important;
@@ -155,7 +101,6 @@ mat-form-field {
 }
 
 .titulo-arbol {
-  font-weight: bold;
   font-size: 1.1rem;
   margin-bottom: 1rem;
   color: #333;
@@ -171,7 +116,16 @@ mat-form-field {
     text-align: center;
     justify-content: center;
     display: flex;
-   
+    border-bottom: 2px solid #6A0F49;
+  }
+
+  .titulo-arbolrep{
+    border-bottom: 2px solid #6A0F49;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    padding-bottom: 30px;
+    
   }
   
 .nodo-carpeta {
@@ -180,12 +134,23 @@ mat-form-field {
   padding: 8px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  color: #6A0F49;
+  transition: color 0.2s ease;
 }
 .nodo-carpeta:hover {
-  /* background-color: #e8f0fe; */
-  background-color: #e8aac676 !important;
+  background-color: #6A0F49 !important;
   cursor: pointer;
+  color: #ffc3d0;
+}
+
+.nodo-carpeta mat-icon {
+  color: #6A0F49; /* color por defecto */
+  transition: color 0.2s ease;
+}
+
+.nodo-carpeta:hover mat-icon {
+  color: #ffc3d0; /* color al pasar el mouse */
+  text-size-adjust: 0.8rem;
 }
 
 .nodo-seleccionado{
