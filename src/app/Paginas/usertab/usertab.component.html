@@ -11,7 +11,7 @@
         </div>
 
         <!--TABLERO ADMINISTRATIVO DE USUARIOS-->
-
+        
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
 
@@ -44,7 +44,7 @@
                 <ng-container matColumnDef="editar">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar </th>
                     <td mat-cell *matCellDef="let row">
-                        <button mat-dialog-content (click)="editUsuario()" class="button">Editar</button>
+                        <button mat-dialog-content (click)="editUsuario()" class="button btn btn-primary btn-sm" style="background-color: rgb(172, 62, 86);">Editar</button>
                     </td>
                 </ng-container>
 
@@ -52,7 +52,7 @@
                 <ng-container matColumnDef="eliminar">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar </th>
                     <td mat-cell *matCellDef="let row">
-                        <button class="button">eliminar</button>
+                        <button class="button btn-secondary btn btn-sm" style="background-color: rgb(172, 62, 86);">eliminar</button>
                     </td>
                 </ng-container>
 

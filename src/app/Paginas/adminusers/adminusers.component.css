@@ -26,9 +26,17 @@ mat-form-field{
   margin-bottom: 25px;
 }
 
-.example-small-box, .example-large-box {
+.example-small-box {
   display: flex;
+  justify-content: center;
   align-items: center;
+  margin: 16px;
+  padding: 1px;
+  border-radius: 8px;
+}
+
+.example-large-box{
+  display: flex;
   justify-content: center;
   margin: 16px;
   padding: 1px;
@@ -44,4 +52,9 @@ mat-form-field{
   height: 500px;
   width: 980px;
 }
-  
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+

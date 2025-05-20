@@ -16,21 +16,6 @@
     box-shadow: 1px 3px 10px rgb(205, 205, 205);
 }
 
-#arbol {
-    border-radius: 10px;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
-}
-
-#arbol-contenido{
-    margin-top: 50px;
-    text-align: center;
-}
-
-#arbol_documentos{
-    margin-top: 35px;
-    text-align: center;
-}
-
 #dash {
     margin-top: 20px;
 }
@@ -43,6 +28,9 @@
 }
 
 #visor {
+    display: block;
+    max-width: fit-content "100%";
+
     margin-left: 20px;
     height: 500px;
     box-shadow: 1px 3px 10px rgb(205, 205, 205);
@@ -67,4 +55,161 @@
 mat-form-field {
     margin-top: 10px;
     width: 100%;
+}
+
+.example-viewport {
+    width: 230px;
+    height: 500px;
+}
+.ngx-extended-pdf-viewer{
+ display: flex;
+    height: 100px;
+}
+
+.clickable-row {
+    cursor: pointer;
+  }
+
+  .documento-enlace:hover {
+    color : #084298;
+    text-decoration: underline;
+  }
+  .mat-row:hover .mat-cell {
+    background-color: #e3f2fd; /* Azul claro */
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+
+  }
+  .clickable-row:hover {
+    background-color: #e3f2fd; /* celeste claro */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .documento-celda {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+  }
+  
+  .pdf-icon {
+    margin-right: 8px;
+  }
+  .nodo-carpeta {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 2px;
+  }
+  
+  .nodo-carpeta:hover {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+  .mat-tree-node-level-0 {
+    padding-left: 0px !important;
+  }
+  
+  .mat-tree-node-level-1 {
+    padding-left: 50px !important;
+  }
+  
+  .mat-tree-node-level-2 {
+    padding-left: 100px !important;
+  }
+  
+  .tabla-documentos {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    border: none;
+    overflow-y: auto;
+  text-align: center;
+    
+  }
+  
+  .mat-table {
+    background-color: transparent !important;
+  }
+  
+  .mat-header-row, .mat-row {
+    background-color: transparent !important;
+  }
+
+
+
+/* Estilos para el árbol de documentos */
+  #arbol {
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-right: 1px solid #ddd;
+  height: 100%;
+  overflow-y: auto;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 1px 3px 10px rgb(205, 205, 205);
+}
+.arbol-personalizado{
+    background: transparent !important;
+    border: none;
+}
+
+.titulo-arbol {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.viewport-arbol {
+  height: calc(100vh - 120px); /* Ajusta según tu diseño */
+  overflow-y: auto;
+}
+
+.header-centrado {
+  margin-top: 20px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+   
+  }
+  
+.nodo-carpeta {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.nodo-carpeta:hover {
+  /* background-color: #e8f0fe; */
+  background-color: #e8aac676 !important;
+  cursor: pointer;
+}
+
+.nodo-seleccionado{
+    background-color: #b2ebf2 !important;
+    font-weight: bold;
+}
+
+.icono-nodo {
+  margin-right: 8px;
+  color: #a6b2f4;
+}
+
+.texto-nodo {
+  flex-grow: 1;
+  color: #333;
+}
+
+.metodo-pago {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+.tabla-sin-fondo{
+  overflow-y: auto;
 }

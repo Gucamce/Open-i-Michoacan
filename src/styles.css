@@ -1,4 +1,99 @@
 /* You can add global styles to this file, and also import other style files */
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Altura total de la pantalla */
+  
+}
+html,
+body {
+    height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-button-toggle-group
+.mat-button-toggle-label-content {
+    color: rgb(62, 62, 62) !important;
+}
+
+p,li,blockquote,label {
+    color: rgb(83, 83, 83) !important;
+}
+
+
+/* Estilo general del contenedor */
+#componente-tabla {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el título */
+#componente-tabla h5 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+}
+
+/* Tabla sin fondo y con mejor separación */
+.table-documentos {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+/* Encabezado */
+.mat-header-cell {
+  background-color: #f4f6f8;
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 14px;
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Celdas */
+.mat-cell {
+  font-size: 14px;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+/* Fila al pasar el mouse */
+.mat-row:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Icono PDF */
+.pdf-icon {
+  color: #e53935;
+  margin-right: 8px;
+}
+
+/* Para responsive */
+@media (max-width: 768px) {
+  #componente-tabla {
+    padding: 12px;
+  }
+
+  .mat-header-cell, .mat-cell {
+    padding: 8px;
+    font-size: 13px;
+  }
+}
+h4, h6 {
+  text-align: center;
+  margin: 0;
+  color: #944040;
+  background-color: transparent;
+}

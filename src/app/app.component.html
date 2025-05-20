@@ -56,6 +56,6 @@ touch-icon.png" />
 
 <body class="body-wrapper">
 
-  <app-navbar></app-navbar>
+  <app-navbar *ngIf="mostrarLayout"></app-navbar>
   <router-outlet></router-outlet>
-  <app-footer></app-footer>
+  <app-footer *ngIf="mostrarLayout"></app-footer>

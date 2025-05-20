@@ -5,6 +5,7 @@ import { AdminusersComponent } from './Paginas/adminusers/adminusers.component';
 import { DashboardComponent } from './Paginas/dashboard/dashboard.component';
 import { OfitabComponent } from './Paginas/ofitab/ofitab.component';
 import { UsertabComponent } from './Paginas/usertab/usertab.component';
+import { ExamplePdfViewerComponent } from './example-pdf-viewer/example-pdf-viewer.component';
 
 export const routes: Routes = [
 
@@ -14,4 +15,5 @@ export const routes: Routes = [
     {path: 'adminusers', component: AdminusersComponent},
     {path: 'dashboard', component: DashboardComponent},
     {path: 'ofitab', component: OfitabComponent},
+    {path: 'pdf', component:ExamplePdfViewerComponent}
 ];

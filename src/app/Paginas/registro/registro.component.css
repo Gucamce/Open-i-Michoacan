@@ -1,0 +1,30 @@
+.example-form {
+
+position: static;
+margin-top: 10px;
+height: 550px;
+width: 500px;
+text-align: center;
+align-items: center;
+justify-content: center;
+}
+.example-card{
+    display: flex;
+    width: 100%;
+}
+
+.example-full-width{
+width: 100%;
+}
+
+.mi-selector-negro .mat-option-text {
+    color: black !important; /* El !important puede ser necesario */
+  }
+
+.mi-select-negro{
+    background-color: black;
+}
+
+mat-option {
+    color: #e91e63; /* Cualquier color que desees */
+  }

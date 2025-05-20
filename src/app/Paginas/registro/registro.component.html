@@ -1,31 +1,54 @@
 <body>
-    <div class="container">
-        <h4>Registro de Usuario</h4>
-        <div class="row">
-        <input type="text" placeholder="Nombre...">
-        <input type="text" placeholder="Apellido...">
-        <input type="email" placeholder="Usuario...">
-        <input type="password" placeholder="Contraseña...">
-        <input type="password" placeholder="Confirmar Contraseña...">
-    </div>
+    <mat-card class="example-card">
+        <form class="example-form">
 
-    <div>
-        Rol de usuario:
-        <select>
-            <option value="">Selecciona una opcion</option>
-            <option value="admin">Administrador</option>
-            <option value="auditor">Auditor</option>
-            <option value="cajero">Cajero</option>
-          </select>
-    </div>
-    <div>
-        Acceso:
-        <mat-checkbox style="color: black;">Total</mat-checkbox>
-        <mat-checkbox style="color: black;">Cajero</mat-checkbox>
-    </div>
-    <div>  
-        <button type="button" class="btn btn-secondary btn-sm">Cancelar</button>
-        <button type="button" class="btn btn-primary btn-sm">Registrar</button>
-    </div>
-    </div>
+            <h4>Editar usuario</h4>
+            <br>
+            <table class="example-full-width" cellspacing="0">
+                <tr>
+                    <td><mat-form-field class="example-full-width">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput [(ngModel)]="nombre" name="nombre">
+                        </mat-form-field></td>
+
+                    <td><mat-form-field class="example-full-width">
+                            <mat-label>Apellido</mat-label>
+                            <input matInput [(ngModel)]="apellido" name="apellido">
+                        </mat-form-field></td>
+                </tr>
+            </table>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Enter your email</mat-label>
+                    <input matInput placeholder="eje@ejemplo.com" [formControl]="email" (blur)="updateErrorMessage()"
+                        required>
+                    @if (email.invalid) {
+                    <mat-error>{{errorMessage}}</mat-error>
+                    }
+                </mat-form-field>
+            
+            <mat-form-field class="example-full-width">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Confirmar contraseña</mat-label>
+                <input matInput type="passwordConfirm">
+            </mat-form-field>
+
+            <form>
+                <h4>Tipo de Usuario:</h4>
+                <mat-form-field class="custom-select">
+                    <mat-label>Selecciona un rol</mat-label>
+                    <mat-select [(ngModel)]="selectedValue" name="tipoUsuario">
+                        @for (roles of rol; track roles) {
+                        <mat-option [value]="roles.value">{{roles.viewValue}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </form>
+
+        </form>
+    </mat-card>
 </body>

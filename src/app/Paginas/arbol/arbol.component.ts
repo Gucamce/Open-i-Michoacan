@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { DummiesService } from '../../Servicios/dummies.services';
+import { OficinaServices } from '../../Servicios/oficinas.services';
 
 
 interface TreeNode {
@@ -37,10 +38,30 @@ export class ArbolComponent implements OnInit {
       level: level,
     };
   };
+  
+  constructor(private dummiesServices: DummiesService, private oficinasSrv: OficinaServices) {
+
+  }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class
+    debugger
+    let JSON = {
+      "name": null,
+      "type": null,
+      "methodPay": null,
+      "year": null,
+      "month": null,
+        "fullDate": null,
+      "branch": "011",
+        "typeFilter": 4
+    }
+
+    this.oficinasSrv.arbolDocument(JSON).subscribe (resp =>{
+
+      console.log(resp);
+      
+    })
+
     this.dummiesServices.catBusquedaAgente().subscribe((responseData: any) => {
       console.log (responseData);
 
@@ -76,9 +97,6 @@ export class ArbolComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(private dummiesServices: DummiesService) {
-    // this.dataSource.data = TREE_DATA;
-  }
 
   hasChild = (_: number, node: ArbolNode) => node.expandable;
 }

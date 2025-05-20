@@ -70,7 +70,7 @@ const NAMES: string[] = [
   styleUrl: './usertab.component.css'
 })
 export class UsertabComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit', 'editar', 'eliminar'];
+  displayedColumns: string[] = ['id', 'name', 'progress', 'editar', 'eliminar'];
   dataSource: MatTableDataSource<UserData>;
 
 
