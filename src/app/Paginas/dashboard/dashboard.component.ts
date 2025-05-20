@@ -182,7 +182,7 @@ export class DashboardComponent implements OnInit {
       console.log('link del documento seleccionado:',documento.link);
       console.log('Nombre del documento seleccionado:', nombreDocumento);
       console.log('methodPay del documento seleccionado:',documento.methodPay);
-      
+    
       
       this.pdfSrc = documento.link;
     }
