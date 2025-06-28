@@ -1,9 +1,26 @@
 
+html {
+  font-size: 14px; /* por defecto es 16px */
+}
+
+body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
 mat-card {
   width: 100%;
-  max-width: 800px;
+  max-width: 650px;
   background-color: #f8f9fa; /* Color suave tipo Bootstrap */
   border-radius: 2rem;
+}
+
+@media (max-width: 280px) {
+  mat-card {
+    padding: 1.5rem;
+    max-width: 90vw;
+  }
 }
 
 h4, h6 {
@@ -26,11 +43,6 @@ button {
   height: 100vh; /* pantalla completa */
   background-color: #e8e7e7; /*Fondo de Login*/
   padding: 1rem;
-}
-
-.login-card {
-  width: 100%;
-  max-width: 900px;
 }
 
 /* 

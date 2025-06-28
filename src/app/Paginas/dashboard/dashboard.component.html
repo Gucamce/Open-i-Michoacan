@@ -1,181 +1,178 @@
 <!-- Cabecera -->
 <div class="row" id="cabecera"></div>
 
+<div class="zoom">
 <!-- Cuerpo principal -->
 <div class="row" id="cuerpo">
 
-  <!-- Árbol lateral -->
-  <div class="col-2" id="arbol">
-    <br>
-    <h5 class="titulo-arbolrep">Repositorio Documental Digital de Ingresos</h5>
+    <!-- Árbol lateral -->
+    <div class="col-2" id="arbol">
 
-    <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
-      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="arbol-personalizado">
+      <h5 class="titulo-arbolrep">Repositorio Documental Digital de Ingresos</h5>
 
-        <!-- Nodo hoja (PDF) -->
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding
-          [class.tree-node-seleccionado]="node.id === selectedTreeNodeId"
-          [ngClass]="{'selected-node-highligt': node.level === 2 && selectedTreeNodeId === node.id}">
-          <div (click)="onNodeClick(node)" class="nodo-carpeta">
-            <i class="fas" [ngClass]="{
+      <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="arbol-personalizado">
+
+          <!-- Nodo hoja (PDF) -->
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding
+            [class.tree-node-seleccionado]="node.id === selectedTreeNodeId"
+            [ngClass]="{'selected-node-highligt': node.level === 2 && selectedTreeNodeId === node.id}">
+            <div (click)="onNodeClick(node)" class="nodo-carpeta">
+              <i class="fas" [ngClass]="{
               'fa-folder-open': node.level === 2 && selectedTreeNodeId === node.id,
               'fa-folder': !(node.level === 2 && selectedTreeNodeId === node.id),
-            }" style="margin-right: 4px;">
-            </i>
-            {{ formatName(node.name) }}
-          </div>
+            }">
+              </i>
+              {{ formatName(node.name) }}
+            </div>
 
-        </mat-tree-node>
+          </mat-tree-node>
 
-        <!-- Nodo con hijos (carpetas) -->
-        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-          <div (click)="toggleNode(node); onNodeClick(node)" class="nodo-carpeta">
-            <i class="fas"
-              [ngClass]="treeControl.isExpanded(node) ? 'fa-folder-open text-warning' : 'fa-folder text-secondary'"
-              style="margin-right: 8px;">
-            </i>
-            {{ getNombreMes(node.name) || node.name }}
-          </div>
-        </mat-tree-node>
+          <!-- Nodo con hijos (carpetas) -->
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <div (click)="toggleNode(node); onNodeClick(node)" class="nodo-carpeta">
+              <i class="fas me-2"
+                [ngClass]="treeControl.isExpanded(node) ? 'fa-folder-open text-warning' : 'fa-folder text-secondary'"
+                style="margin-right: 8px;">
+              </i>
+              {{ getNombreMes(node.name) || node.name }}
+            </div>
+          </mat-tree-node>
 
-      </mat-tree>
-    </cdk-virtual-scroll-viewport>
-  </div>
-
-  <!-- Contenedor de documentos y visor -->
-  <div class="col-9" id="contenedor-document">
-    <br>
-
-    <!-- Título de oficina y municipio -->
-    <div class="row justify-content-center">
-      <div class="col-auto">
-        <h5 class="negrita">
-          Oficina: {{ oficinaSeleccionada?.office || "No se seleccionó oficina" }}-
-          {{ oficinaSeleccionada?.description || "" }}
-        </h5>
-      </div>
+        </mat-tree>
+      </cdk-virtual-scroll-viewport>
     </div>
 
-    <div class="row" id="dash">
+    <!-- Contenedor de documentos y visor -->
+    <div class="col-9" id="contenedor-document">
+      <br>
 
-
-      <!-- Tabla de documentos -->
-      <div class="col-11" id="documentos">
-        <div class="tabla-scroll-vertical">
-
-          <!-- Checkbox para seleccionar todos -->
-
-          <!-- Acciones de la tabla -->
-          <mat-toolbar class="acciones-tabla mat-elevation-z2" color="primary"
-            *ngIf="dataSourceDocumentos.data.length > 0">
-            <div class="acciones-contenido">
-
-              <!-- Filtros -->
-           
-              <!-- Filtro General -->
-
-              <mat-form-field class="filtro-tabla">
-                <mat-label>Filtrar documento</mat-label>
-                <input matInput (keyup)="aplicarFiltro($event)" placeholder="Buscar por archivo o método de pago">
-              </mat-form-field>
-
-              <!-- Filtro por Caja -->
-              <mat-form-field *ngIf="columnaVisible.includes('station')">
-                <mat-label>Filtrar por caja</mat-label>
-                <input matInput (input)="filtrarPorCaja($event)" placeholder="Ej. 01" />
-              </mat-form-field>
-
-              <!-- Filtro por Fecha Contable -->
-              <mat-form-field>
-                <mat-label>Filtrar por fecha</mat-label>
-                <input matInput (input)="filtrarPorFecha($event)" placeholder="Ej. 27.05.2025" />
-              </mat-form-field>
-
-              <!-- Checkbox seleccionar todos -->
-              <mat-checkbox (change)="toggleSeleccionarTodos()" class="seleccionar-todos">
-                Todos
-              </mat-checkbox>
-
-              <!-- Botón de descarga -->
-              <button mat-raised-button color="accent" (click)="descargarDocumentosSeleccionados()"
-                [disabled]="!hayDocumentosSeleccionados">
-                <i class="fas fa-download"></i>
-              </button>
-            </div>
-          </mat-toolbar>
-
-          <div *ngIf="isDownloading" class="spinner-container">
-            <div class="spinner-css"></div>
-            <p>Generando .ZIP, por favor espera...</p>
-          </div>
-
-
-          <table mat-table [dataSource]="dataSourceDocumentos" class="mat-elevation-z8">
-
-            <!-- Columna: Selección -->
-            <ng-container matColumnDef="seleccion">
-              <th mat-header-cell *matHeaderCellDef class="col-seleccion"> Seleccionar </th>
-              <td mat-cell *matCellDef="let doc" class="col-seleccion">
-                <mat-checkbox style="border-radius: 15px; " [(ngModel)]="doc.seleccionado"></mat-checkbox>
-              </td>
-            </ng-container>
-
-            <!-- Columna: Nombre del documento -->
-            <ng-container matColumnDef="column">
-              <th mat-header-cell *matHeaderCellDef> Archivo </th>
-              <td mat-cell *matCellDef="let doc" (click)="mostrarPDF(doc)">
-                {{ doc.column }}
-              </td>
-            </ng-container>
-
-            <!-- Columna: Método de Pago -->
-            <ng-container matColumnDef="methodPay">
-              <th mat-header-cell *matHeaderCellDef> Método de Pago </th>
-              <td mat-cell *matCellDef="let doc"> {{ doc.methodPay }} </td>
-            </ng-container>
-
-            <!-- Station Column -->
-            <ng-container matColumnDef="station">
-              <th mat-header-cell *matHeaderCellDef> Caja </th>
-              <td mat-cell *matCellDef="let doc"> {{ doc.station }} </td>
-            </ng-container>
-
-
-            <!-- Columna: Fecha -->
-            <ng-container matColumnDef="fullDate">
-              <th mat-header-cell *matHeaderCellDef> Fecha Contable </th>
-              <td mat-cell *matCellDef="let doc"> {{ doc.fullDate }} </td>
-            </ng-container>
-
-            <!-- Columna: Ver PDF -->
-            <ng-container matColumnDef="ver">
-              <th mat-header-cell *matHeaderCellDef> Ver PDF </th>
-              <td mat-cell *matCellDef="let doc">
-                <button mat-icon-button (click)="mostrarPDF(doc)">
-                  <i
-                  class="fas fa-file-pdf icon-pdf"
-                  ngClass="{
-                    'icono-seleccionado': documentoActual?.id === doc.id,
-                    'icono-no-seleccionado': documentoActual?.id !== doc.id
-                  }"></i>
-                </button>
-              </td>
-            </ng-container>
-
-            <!-- Filas de la tabla -->
-            <tr mat-header-row *matHeaderRowDef="columnaVisible">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: columnaVisible"
-            class="fila-documento"
-            [ngClass]="{ 'fila-seleccionada': filaSeleccionada === row }"
-            (click)="seleccionarFila(row)"
-            ></tr>
-
-          </table>
+      <!-- Título de oficina y municipio -->
+      <div class="row justify-content-center">
+        <div class="col-auto">
+          <h5 class="negrita">
+            Oficina: {{ oficinaSeleccionada?.office || "No se seleccionó oficina" }}-
+            {{ oficinaSeleccionada?.description || "" }}
+          </h5>
         </div>
       </div>
 
+      <div class="row" id="dash">
 
+
+        <!-- Tabla de documentos -->
+        <div class="col-11" id="documentos">
+          <div class="tabla-scroll-vertical">
+
+            <!-- Checkbox para seleccionar todos -->
+
+            <!-- Acciones de la tabla -->
+            <mat-toolbar class="acciones-tabla mat-elevation-z2" color="primary"
+              *ngIf="dataSourceDocumentos.data.length > 0">
+              <div class="acciones-contenido">
+
+                <!-- Filtros -->
+
+                <!-- Filtro General -->
+
+                <mat-form-field class="filtro-tabla">
+                  <mat-label>Filtrar documento</mat-label>
+                  <input matInput (keyup)="aplicarFiltro($event)" placeholder="Buscar por archivo o método de pago">
+                </mat-form-field>
+
+                <!-- Filtro por Caja -->
+                <mat-form-field *ngIf="columnaVisible.includes('station')">
+                  <mat-label>Filtrar por caja</mat-label>
+                  <input matInput (input)="filtrarPorCaja($event)" placeholder="Ej. 01" />
+                </mat-form-field>
+
+                <!-- Filtro por Fecha Contable -->
+                <mat-form-field>
+                  <mat-label>Filtrar por fecha</mat-label>
+                  <input matInput (input)="filtrarPorFecha($event)" placeholder="Ej. 27.05.2025" />
+                </mat-form-field>
+
+                <!-- Checkbox seleccionar todos -->
+                <mat-checkbox (change)="toggleSeleccionarTodos()" class="seleccionar-todos">
+                  Todos
+                </mat-checkbox>
+
+                <!-- Botón de descarga -->
+                <button mat-raised-button color="accent" (click)="descargarDocumentosSeleccionados()"
+                  [disabled]="!hayDocumentosSeleccionados">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </mat-toolbar>
+
+            <div *ngIf="isDownloading" class="spinner-container">
+              <div class="spinner-css"></div>
+              <p>Generando .ZIP, por favor espera...</p>
+            </div>
+
+
+            <table mat-table [dataSource]="dataSourceDocumentos" class="mat-elevation-z8">
+
+              <!-- Columna: Selección -->
+              <ng-container matColumnDef="seleccion">
+                <th mat-header-cell *matHeaderCellDef class="col-seleccion"> Seleccionar </th>
+                <td mat-cell *matCellDef="let doc" class="col-seleccion">
+                  <mat-checkbox style="border-radius: 15px; " [(ngModel)]="doc.seleccionado"></mat-checkbox>
+                </td>
+              </ng-container>
+
+              <!-- Columna: Nombre del documento -->
+              <ng-container matColumnDef="column">
+                <th mat-header-cell *matHeaderCellDef> Archivo </th>
+                <td mat-cell *matCellDef="let doc" (click)="mostrarPDF(doc)">
+                  {{ doc.column }}
+                </td>
+              </ng-container>
+
+              <!-- Columna: Método de Pago -->
+              <ng-container matColumnDef="methodPay">
+                <th mat-header-cell *matHeaderCellDef> Método de Pago </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.methodPay }} </td>
+              </ng-container>
+
+              <!-- Station Column -->
+              <ng-container matColumnDef="station">
+                <th mat-header-cell *matHeaderCellDef> Caja </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.station }} </td>
+              </ng-container>
+
+
+              <!-- Columna: Fecha -->
+              <ng-container matColumnDef="fullDate">
+                <th mat-header-cell *matHeaderCellDef> Fecha Contable </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.fullDate }} </td>
+              </ng-container>
+
+              <!-- Columna: Ver PDF -->
+              <ng-container matColumnDef="ver">
+                <th mat-header-cell *matHeaderCellDef> Ver PDF </th>
+                <td mat-cell *matCellDef="let doc">
+                  <button mat-icon-button (click)="mostrarPDF(doc)">
+                    <i class="fas fa-file-pdf icon-pdf" ngClass="{
+                    'icono-seleccionado': documentoActual?.id === doc.id,
+                    'icono-no-seleccionado': documentoActual?.id !== doc.id
+                  }"></i>
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Filas de la tabla -->
+              <tr mat-header-row *matHeaderRowDef="columnaVisible">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: columnaVisible" class="fila-documento"
+                [ngClass]="{ 'fila-seleccionada': filaSeleccionada === row }" (click)="seleccionarFila(row)"></tr>
+
+            </table>
+          </div>
+        </div>
+
+
+      </div>
     </div>
   </div>
 </div>
@@ -196,8 +193,7 @@
     <ngx-extended-pdf-viewer [src]="pdfSrc" zoom="auto" useBrowserLocale="false" [showDownloadButton]="false"
       [showFindButton]="false" [showRotateButton]="false" [showOpenFileButton]="false" [showDrawEditor]="false"
       [showTextEditor]="false" [showHandToolButton]="false" [showSecondaryToolbarButton]="false"
-      [showStampEditor]="false" [showHighlightEditor]="false"
-      style="width: 100%; height: 100%;">
+      [showStampEditor]="false" [showHighlightEditor]="false" style="width: 100%; height: 100%;">
     </ngx-extended-pdf-viewer>
   </mat-dialog-content>
 </ng-template>

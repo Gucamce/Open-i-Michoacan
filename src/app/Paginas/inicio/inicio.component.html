@@ -1,72 +1,62 @@
 <body>
 
-  <div class="row" id="cabecera">
-
-  </div>
+  <div class="row" id="cabecera"></div>
 
   <div class="row" id="cuerpo">
+    
 
-    <div class="col-2" id="arbol">
-      <div id="arbol-contenido">
-        <h5 class="titulo-arbolrep">Repositorio Documental Digital de Ingresos</h5>
-        <!--ARBOL DE DOCUMENTOS-->
-      </div>
-    </div>
+    <!-- Contenedor con escala en un wrapper -->
+    <div class="zoom-wrapper">
+      <div id="contenedor-document">
+        <div class="row" id="dash">
+          <div class="col-11">
 
-    <div class="col-9" id="contenedor-document">
-      <div class="row" id="dash">
-        <div class="col-11">
-          <!--Usuario Cajero (3) -->
-          <div id="componente-tabla" style="margin-top: 20px;" *ngIf="type === 2">
-            <h5 class="titulo-oficina">Oficinas</h5>
-            <!-- Tabla de Oficinas -->
-            <app-ofitab></app-ofitab>
-          </div>
-
-          <!-- Usuario Admin (1) y Auditor (2) -->
-          <div *ngIf="type === 1 || type === 3" class="d-flex justify-content-center text-center">
-            <div class="w-100" style="max-width: 100%;">
-            
+            <!-- Usuario Cajero (type = 2) -->
+            <div id="componente-tabla" style="margin-top: 20px;" *ngIf="type === 2">
               <h5 class="titulo-oficina">Oficinas</h5>
-            
-              <!-- Campo de búsqueda -->
-            
-              <mat-form-field appearance="fill" class="w-100 mb-3">
-                <mat-label>Buscar oficina...</mat-label>
-                <input matInput (input)="applyFilter($event)" placeholder="Escribe un nombre o ID">
-              </mat-form-field>
-             
-              <!-- Tabla -->
-              <div class="mat-elevation-z2 tabla-scroll">
-                <table mat-table [dataSource]="dataSource" class="table table-hover mat-table">
+              <app-ofitab></app-ofitab>
+            </div>
 
-                  <!-- Columna Office -->
-                  <ng-container matColumnDef="office">
-                    <th mat-header-cell *matHeaderCellDef>ID</th>
-                    <td mat-cell *matCellDef="let oficina">{{ oficina.office }}</td>
-                  </ng-container>
+            <!-- Usuario Admin (1) y Auditor (3) -->
+            <div *ngIf="type === 1 || type === 3" class="d-flex justify-content-center text-center">
+              <div class="w-100" style="max-width: 100%;">
+                <h5 class="titulo-oficina">Oficinas</h5>
 
-                  <!-- Columna Descripción -->
-                  <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef>Descripción</th>
-                    <td mat-cell *matCellDef="let oficina">{{ oficina.description }}</td>
-                  </ng-container>
+                <mat-form-field appearance="fill" class="w-100 mb-3">
+                  <mat-label>Buscar oficina...</mat-label>
+                  <input matInput (input)="applyFilter($event)" placeholder="Escribe un nombre o ID">
+                </mat-form-field>
 
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row
-                    *matRowDef="let row; columns: displayedColumns;"
-                    (click)="seleccionarOficina(row)"
-                    class="fila-hover-focus"></tr>
-                </table>
+                <div class="mat-elevation-z2 tabla-scroll">
+                  <table mat-table [dataSource]="dataSource" class="table table-hover mat-table">
 
-                <mat-paginator [pageSize]="6" showFirstLastButtons></mat-paginator>
+                    <ng-container matColumnDef="office">
+                      <th mat-header-cell *matHeaderCellDef>ID</th>
+                      <td mat-cell *matCellDef="let oficina">{{ oficina.office }}</td>
+                    </ng-container>
 
+                    <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                      <td mat-cell *matCellDef="let oficina">{{ oficina.description }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        (click)="seleccionarOficina(row)"
+                        class="fila-hover-focus">
+                    </tr>
+                  </table>
+
+                  <mat-paginator [pageSize]="6" showFirstLastButtons></mat-paginator>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
+
   </div>
 
 </body>

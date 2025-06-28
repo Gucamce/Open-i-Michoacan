@@ -1,6 +1,12 @@
-:root{
-  outline: none;
+.zoom {
+  transform: scale(0.7);
+  transform-origin: top center;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  overflow: hidden;
 }
+
 #cabecera {
   height: 110px;
 }
