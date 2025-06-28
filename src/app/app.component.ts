@@ -3,6 +3,7 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from './Paginas/navbar/navbar.component';
 import { FooterComponent } from './Paginas/footer/footer.component';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
     FooterComponent,
     RouterOutlet,
     CommonModule,
+    MatIconModule,
   ],
 //  templateUrl: './Paginas/login/login.component.html',
     templateUrl: './app.component.html',

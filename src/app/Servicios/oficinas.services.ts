@@ -4,35 +4,52 @@ import { Observable } from "rxjs";
 import { environment } from "../../environments/environments";
 
 const url = environment.apiurl;
-const urlOficina = environment.officeurl;
 
 
 @Injectable({ providedIn: 'root' })
-
 export class OficinaServices {
+    documentos: any[] = [];
 
+    constructor(
+        private http: HttpClient,
+    ) { }
 
-    constructor(private http: HttpClient) {
-        // Constructor logic here
+    private getAuthHeaders(): HttpHeaders {
+        const token = localStorage.getItem("TK");
+        return new HttpHeaders ({
+            'Authorization': `Bearer ${token}`,
+            'Content-type': 'application/json'
+        });
     }
 
-    // Example method
     arbolDocument(json: any): Observable<any> {
-        // Implement your login logic here
-        let token = localStorage.getItem("TK");
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'
-        })
-        return this.http.post(`${url}/document/filter`, json, { headers }); // Placeholder return value
-
+        return this.http.post(`${url}/document/filter`, json, { headers: this.getAuthHeaders() });
     }
 
+    getBranches(): Observable<any> {
+        return this.http.post(`${url}/document/branch`, {}, { headers: this.getAuthHeaders() })
+    }
 
-    catalogos(json: any): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-        return this.http.post(`${urlOficina}/RESTAdapter/catalogos`, json, { headers });
+    getUsuarioById(id: string): Observable<any> {
+        return this.http.post(`${url}/user/register`, { id }, { headers: this.getAuthHeaders() });
+    }
+
+    registroUsuario(UserData: any): Observable<any> {
+        return this.http.post(`${url}/user/register`, UserData, {headers: this.getAuthHeaders()})
+    }
+
+    getUsuarios (): Observable<any> {
+        return this.http.post(`${url}/document/users`, {}, {headers: this.getAuthHeaders()})
+    }
+
+    editarUsuario(UserData: any): Observable<any> {
+        return this.http.post(`${url}/document/users`, UserData, {headers: this.getAuthHeaders()})
+    }
+
+    eliminarUsuario(id: string): Observable<any> {
+        return this.http.delete(`${url}/document/users/${id}`, {
+            headers: this.getAuthHeaders(),
+        });
     }
 
 }

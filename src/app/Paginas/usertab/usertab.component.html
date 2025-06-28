@@ -11,7 +11,7 @@
         </div>
 
         <!--TABLERO ADMINISTRATIVO DE USUARIOS-->
-        
+
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
 
@@ -21,10 +21,10 @@
                     <td mat-cell *matCellDef="let row"> {{row.id}} </td>
                 </ng-container>
 
-                <!-- Progress Column -->
-                <ng-container matColumnDef="progress">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </th>
-                    <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+                <!-- Apellido Column -->
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </th>
+                    <td mat-cell *matCellDef="let row"> {{row.lastName}}% </td>
                 </ng-container>
 
                 <!-- Name Column -->
@@ -33,18 +33,19 @@
                     <td mat-cell *matCellDef="let row"> {{row.name}} </td>
                 </ng-container>
 
-                <!-- Fruit Column -->
-                <ng-container matColumnDef="fruit">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Contraseña </th>
-                    <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+                <!-- Usuario Column -->
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </th>
+                    <td mat-cell *matCellDef="let row"> {{row.userName}} </td>
                 </ng-container>
 
                 <!-- Editar Columna -->
-
                 <ng-container matColumnDef="editar">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar </th>
+                    <th mat-header-cell *matHeaderCellDef>Editar</th>
                     <td mat-cell *matCellDef="let row">
-                        <button mat-dialog-content (click)="editUsuario()" class="button btn btn-primary btn-sm" style="background-color: rgb(172, 62, 86);">Editar</button>
+                        <button (click)="editUsuario(row)" class="btn btn-primary btn-sm">
+                            Editar
+                        </button>
                     </td>
                 </ng-container>
 
@@ -52,24 +53,24 @@
                 <ng-container matColumnDef="eliminar">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar </th>
                     <td mat-cell *matCellDef="let row">
-                        <button class="button btn-secondary btn btn-sm" style="background-color: rgb(172, 62, 86);">eliminar</button>
+                        <button 
+                            class="button btn btn btn-sm"
+                            style="background-color: rgb(172, 62, 86);"
+                            (click)="eliminarUsuario(row)">Eliminar</button>
                     </td>
                 </ng-container>
-
-              
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                <!-- Row shown when there is no matching data. -->
+                <!-- Se muestra cuando no se encuentran datos. -->
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                 </tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                aria-label="Select page of users"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[6]" aria-label="Select page of users"></mat-paginator>
         </div>
     </div>
-    
+
 </body>

@@ -6,14 +6,13 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { OfficeService } from '../../Servicios/office.service';
-import { LoginService } from '../../Servicios/login.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 export interface UserData {
   id: number;
-  description: string;
   office: string;
+  description: string;
 }
 
 
@@ -28,41 +27,47 @@ export interface UserData {
     MatPaginatorModule,
     FormsModule,
     MatCheckboxModule,
+    CommonModule,
   ],
   templateUrl: './ofitab.component.html',
   styleUrl: './ofitab.component.css'
 })
 
-export class OfitabComponent implements AfterViewInit, OnInit{
-  displayedColumns: string[] = ['Oficina', 'DESCRIPCION'];
+export class OfitabComponent implements AfterViewInit, OnInit {
+  displayedColumns: string[] = ['office', 'description'];
   dataSource = new MatTableDataSource<UserData>([]);
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   oficinas: any;
 
   constructor(
-    private loginService: LoginService, private route:Router
-  ) {}
+    private route: Router,
 
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    const arrOf = localStorage.getItem("BRANCH");
+  ) { }
 
-    this.oficinas= arrOf?JSON.parse(arrOf):[];
-    console.log(this.oficinas);
+ ngOnInit(): void {
+  const lstBranchString = localStorage.getItem('lstBranch');
+  console.log('Valor de lstBranch en localStorage:', lstBranchString);
 
-    this.dataSource = this.oficinas
-    
+  if (lstBranchString) {
+    this.dataSource.data = JSON.parse(lstBranchString);
+
+    this.dataSource.filterPredicate = (data: UserData, filter: string) => {
+      const dataStr = (data.office + ' ' + data.description).toLowerCase();
+      return dataStr.includes(filter);
+    };
+  } else {
+    console.warn('No se encontró lstBranch en localStorage');
   }
+}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-  } 
-  
+  }
 
   /** Applies the filter to the table data. */
   applyFilter(event: Event) {
@@ -75,9 +80,8 @@ export class OfitabComponent implements AfterViewInit, OnInit{
   }
 
 
-  seleccionRow(row:any){
-    console.log(row);
-    this.route.navigate(["/dashboard"]),
-    localStorage.setItem("oficinaseleccion",JSON.stringify(row))
-  }
+  seleccionRow(row: any) {
+  localStorage.setItem("BRANCHES", JSON.stringify(row));
+  this.route.navigate(["/dashboard"]);
+}
 }

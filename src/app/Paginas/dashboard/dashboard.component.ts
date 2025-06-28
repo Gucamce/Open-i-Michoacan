@@ -5,19 +5,32 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { DummiesService } from '../../Servicios/dummies.services';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { OficinaServices } from '../../Servicios/oficinas.services';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ViewChild, TemplateRef } from '@angular/core';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 interface TreeNode {
   name: string;
   link?: string;
   children?: TreeNode[];
-  documentos?: { name: string, link: string, methodPay: string }[];
-
+  documentos?: {
+    name: string,
+    link: string,
+    methodPay: string,
+    station: string,
+    fullDate: string
+  }[];
+  id?: string;
 }
 
 interface ArbolNode {
@@ -26,7 +39,9 @@ interface ArbolNode {
   level: number;
   link?: string;
   methodPay?: string;
+  station?: string;
   originalNode?: TreeNode;
+  id?: string; // ¡Añadimos esta propiedad para un ID único!
 }
 
 @Component({
@@ -39,9 +54,14 @@ interface ArbolNode {
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule,
     ScrollingModule,
     CommonModule,
     NgxExtendedPdfViewerModule,
+    FormsModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -49,12 +69,25 @@ interface ArbolNode {
 
 export class DashboardComponent implements OnInit {
 
+  isDownloading: boolean = false;
   oficinaSeleccionada: any;
   pdfSrc: string = '';
   zoom = 1.0;
+  filaSeleccionada: any = null;
 
-  documentosSeleccionados: any[] = [];
+  @ViewChild('modalVisorPDF') modalVisorPDF!: TemplateRef<any>;
+
+  documentosSeleccionados: Set<string> = new Set(); // IDs o nombres de documentos seleccionados
+
   dataSourceDocumentos = new MatTableDataSource<any>();
+  documentoActual: any = null;
+
+  filtroTexto: string = '';
+  filtroFecha: string = '';
+  filtroCaja: string = '';
+
+  selectedTreeNodeId: string | null = null;
+  displayedColumns: string[] = ['column', 'methodPay', 'station', 'ver', 'fullDate'];
 
   treeControl = new FlatTreeControl<ArbolNode>(
     node => node.level,
@@ -67,7 +100,17 @@ export class DashboardComponent implements OnInit {
     link: node.link,
     expandable: !!node.children && node.children.length > 0,
     originalNode: node,
+    id: node.id,
   });
+
+  private obtenerNombreDesdeLink(link: string): string {
+    try {
+      const url = new URL(link);
+      return url.pathname.split('/').pop() || 'documento.pdf';
+    } catch {
+      return link.split('/').pop() || 'documento.pdf';
+    }
+  }
 
   treeFlattener = new MatTreeFlattener(
     this._transformer,
@@ -78,15 +121,47 @@ export class DashboardComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(private dummiesServices: DummiesService, private oficinasSrv: OficinaServices) { }
+  // *** AÑADIR ESTA PROPIEDAD SI NO LA TIENES YA ***
+  selectedTreeNode: ArbolNode | null = null; // Para guardar el nodo de árbol seleccionado
+
+  constructor(
+    private oficinasSrv: OficinaServices,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
-    const officeStorage = localStorage.getItem("oficinaseleccion");
-    this.oficinaSeleccionada = officeStorage ? JSON.parse(officeStorage) : null;
+    const stored = localStorage.getItem("BRANCHES");
+
+    if (stored) {
+      this.oficinaSeleccionada = JSON.parse(stored);
+
+      const branchId =
+        this.oficinaSeleccionada?.office;
+
+      console.log("Branch seleccionado desde oficina:", branchId);
+    } else {
+      console.warn("No hay oficna seleccionada en localStorage");
+    }
+
     this.cargarArbol();
 
-    this.dataSourceDocumentos.filterPredicate = (data, filter) => {
-      return data.column.toLowerCase().includes(filter);
+    this.dataSourceDocumentos.filterPredicate = (data, rawFilter) => {
+      const filtro: { texto: string; fecha: string; caja: string } = JSON.parse(rawFilter);
+
+      const search = filtro.texto.toLowerCase();
+      const fecha = filtro.fecha.toLowerCase();
+      const caja = filtro.caja.toLowerCase();
+
+      const coincideTexto =
+        data.column?.toLowerCase().includes(search) ||
+        data.methodPay?.toLowerCase().includes(search);
+
+      const coincideCaja =
+        data.station?.toLowerCase().includes(caja);
+
+      const coincideFecha = data.fullDate?.toLowerCase().includes(fecha)
+
+      return coincideTexto && coincideFecha && coincideCaja;
     };
   }
 
@@ -100,91 +175,153 @@ export class DashboardComponent implements OnInit {
       year: null,
       month: null,
       fullDate: null,
-      branch: '011',
+      branch: this.oficinaSeleccionada?.office || '',
+      station: null,
       typeFilter: 4
     };
 
     this.oficinasSrv.arbolDocument(payload).subscribe((resp: any) => {
       const estructuraJerarquica = this.transformarArbol(resp.listDocuments);
       this.dataSource.data = estructuraJerarquica;
-
     });
   }
 
   transformarArbol(documentos: any[]): TreeNode[] {
-
     const tree: TreeNode[] = [];
 
     for (const doc of documentos) {
-      const { year, month, type, name, link, methodPay } = doc;
+      const { year, month, type, name, link, methodPay, station, fullDate } = doc;
 
-      //Nodo Año
+      const formattedType = this.tipoDocumentoMap[type] || this.formatName(type);
+
+      // Nivel 0: Año
       let nodoAnio = tree.find(n => n.name === year);
       if (!nodoAnio) {
         nodoAnio = { name: year, children: [] };
         tree.push(nodoAnio);
       }
 
-      //Nodo Mes
+      // Nivel 1: Mes
       let nodoMes = nodoAnio.children!.find(n => n.name === month);
       if (!nodoMes) {
         nodoMes = { name: month, children: [] };
         nodoAnio.children!.push(nodoMes);
       }
-      //Nodo Tipo (Documentos)
-      let nodoTipo = nodoMes.children!.find(n => n.name === type);
+
+      // Nivel 2: Tipo (formateado)
+      let nodoTipo = nodoMes.children!.find(n => n.name === formattedType);
       if (!nodoTipo) {
-        nodoTipo = { name: type, children: [], documentos: [] as any[] };
+        const tipoId = `${year}-${month}-${formattedType}`;
+        nodoTipo = { name: formattedType, children: [], documentos: [], id: tipoId };
         nodoMes.children!.push(nodoTipo);
       }
-      //Guarda Documentos en el Nodo Tipo
-      nodoTipo.documentos!.push({ name, link, methodPay });
+
+      nodoTipo.documentos!.push({ name, link, methodPay, station, fullDate });
+    }
+
+    //Ordena los meses
+    for (const nodoAnio of tree) {
+      {
+        nodoAnio.children = (nodoAnio.children || []).sort((a, b) => {
+          const idxA = this.mesesOrden.indexOf(a.name);
+          const idxB = this.mesesOrden.indexOf(b.name);
+          return idxA - idxB;
+        });
+      };
+    }
+
+    // Ordena los nodos nivel 2 según nivel2Orden
+    for (const nodoAnio of tree) {
+      for (const nodoMes of nodoAnio.children || []) {
+        nodoMes.children = (nodoMes.children || []).sort((a, b) => {
+          const idxA = this.nivel2Orden.indexOf(a.name);
+          const idxB = this.nivel2Orden.indexOf(b.name);
+          return (idxA === -1? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+        });
+      }
     }
 
     return tree;
-
   }
+
 
   onNodeClick(node: ArbolNode) {
     const original = node.originalNode;
 
     console.log('Nodo clickeado:', node);
     console.log('Nivel:', node.level);
+    console.log('Nodo ID:', node.id);
+    console.log('Selected Node ID (component state):', this.selectedTreeNodeId);
     console.log('Documentos en nodo:', original?.documentos);
 
+    // Si el nodo clicado es de nivel 2 (la "última carpeta" con documentos)
+    if (node.level === 2 && node.id) {
+      // Almacena el ID del nodo seleccionado
+      this.selectedTreeNodeId = node.id; // Usa el ID para el foco
 
+      // Carga los documentos asociados a este nodo de nivel 2
+      if (original?.documentos?.length) {
+        const documentos = original.documentos.map(doc => ({
+          column: doc.name,
+          link: doc.link,
+          methodPay: doc.methodPay,
+          fullDate: doc.fullDate,
+          station: doc.station,
+          seleccionado: false
 
-    //Verifica si el nodo es un documento
-    if (node.level === 2 && original?.documentos?.length) {
-
-      this.documentosSeleccionados = original.documentos.map(doc => ({
-        column: doc.name,
-        link: doc.link,
-        methodPay: doc.methodPay,
-      }));
-      this.dataSourceDocumentos.data = this.documentosSeleccionados;
+        }));
+        this.dataSourceDocumentos.data = documentos;
+        this.actualizarColumnasVisibles();
+        this.documentosSeleccionados.clear(); // Limpiar selección al cargar nuevos
+      } else {
+        // Si es nivel 2 pero no tiene documentos (quizás una carpeta vacía)
+        this.dataSourceDocumentos.data = [];
+        this.pdfSrc = '';
+      }
     } else {
-      this.documentosSeleccionados = [];
-      this.dataSourceDocumentos.data = [];
+      // Si se hace clic en un nivel superior (año, mes), deselecciona la "última carpeta"
+      this.selectedTreeNodeId = null; // Quita el foco
+      this.dataSourceDocumentos.data = []; // También limpia la tabla de documentos
       this.pdfSrc = '';
     }
+
+
   }
+  treeNodeTrackBy = (index: number, node: ArbolNode) => node.id;
 
   aplicarFiltro(event: Event) {
-    const valorFiltro = (event.target as HTMLInputElement).value;
-    this.dataSourceDocumentos.filter = valorFiltro.trim().toLowerCase();
+    this.filtroTexto = (event.target as HTMLInputElement).value;
+    this.aplicarFiltros();
   }
 
-  mostrarPDF(nombreDocumento: string) {
-    const documento = this.documentosSeleccionados.find(doc => doc.column
-      === nombreDocumento);
+  aplicarFiltros() {
+    this.dataSourceDocumentos.filter = JSON.stringify({
+      texto: this.filtroTexto.trim(),
+      fecha: this.filtroFecha.trim(),
+      caja: this.filtroCaja.trim(),
+    });
+  }
+
+  filtrarPorFecha(event: Event) {
+    this.filtroFecha = (event.target as HTMLInputElement).value;
+    this.aplicarFiltros();
+  }
+  filtrarPorCaja(event: Event) {
+    this.filtroCaja = (event.target as HTMLInputElement).value;
+    this.aplicarFiltros();
+  }
+
+  mostrarPDF(documento: any) {
     if (documento) {
-      console.log('link del documento seleccionado:',documento.link);
-      console.log('Nombre del documento seleccionado:', nombreDocumento);
-      console.log('methodPay del documento seleccionado:',documento.methodPay);
-    
-      
       this.pdfSrc = documento.link;
+      this.documentoActual = documento;
+
+      this.dialog.open(this.modalVisorPDF, {
+        width: '50vw',
+        height: '70vh',
+        maxWidth: '100vw',
+        panelClass: 'full-screen-modal'
+      });
     }
   }
 
@@ -198,6 +335,10 @@ export class DashboardComponent implements OnInit {
     }
     return null;
   }
+  mesesOrden = [
+    '01', '02', '03', '04', '05', '06',
+    '07', '08', '09', '10', '11', '12'
+  ];
 
   getNombreMes(numero: string): string {
     const meses: any = {
@@ -208,9 +349,193 @@ export class DashboardComponent implements OnInit {
     };
     return meses[numero] || numero;
   }
+
+  nivel2Orden = [
+    'Ingresos',
+    'Anulacion',
+    'Contabilización de Salidas',
+    'Cierre de Caja',
+    'Póliza de Diario'
+  ];
+
+  tipoDocumentoMap: { [clave: string]: string } = {
+    'Ingreso': 'Ingresos',
+    'Anulacion': 'Anulacion',
+    'Contabilización de salidas': 'Contabilización de Salidas',
+    'Cierre de Caja': 'Cierre de Caja',
+    'Poliza de Diario': 'Póliza de Diario',
+  };
+
+  formatName(name: string): string {
+    const lowercaseWords = ['de', 'del', 'la', 'el', 'en', 'y', 'a', 'por', 'con', 'para', 'sin', 'al', 'o'];
+
+
+    return name
+      .toLowerCase()
+      .replace(/_/g, ' ')
+      .split(' ')
+      .map((word, index) => {
+        if (index === 0 || !lowercaseWords.includes(word)) {
+          // Primera palabra o no está en la lista: capitaliza
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        } else {
+          // Palabra común en español: minúscula
+          return word;
+        }
+      })
+      .join(' ');
+  }
+
+  columnaBase: string[] = ['seleccion', 'column', 'methodPay', 'station', 'fullDate', 'ver'];
+  columnaVisible: string [] = [];
+
+  actualizarColumnasVisibles() {
+    const data = this.dataSourceDocumentos.data;
+
+    this.columnaVisible = this.columnaBase.filter(col => {
+      if (col === 'seleccion' || col === 'ver' || col === 'column' || col === 'fullDate') return true; // Columnas Siempre Visibles
+
+      return data.some(doc => !!doc[col]);
+    })
+  }
+
   toggleNode(node: ArbolNode): void {
     this.treeControl.isExpanded(node)
       ? this.treeControl.collapse(node)
       : this.treeControl.expand(node);
+  }
+
+  seleccionarDocumento(documento: any) {
+    documento.seleccionado = !documento.seleccionado;
+    if (documento.seleccionado) {
+      this.documentosSeleccionados.add(documento.column);
+    } else {
+      this.documentosSeleccionados.delete(documento.column);
+    }
+  }
+
+  estaSeleccionado(documento: any): boolean {
+    return documento.seleccionado;
+  }
+
+  descargarPDFsSeleccionados() {
+    const seleccionados = this.dataSourceDocumentos.data.filter(doc => doc.seleccionado);
+    if (seleccionados.length === 0) {
+      alert("No hay documentos seleccionados");
+      return;
+    }
+
+    seleccionados.forEach(doc => {
+      fetch(doc.link)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Error al descargar ${doc.column}`);
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = this.obtenerNombreDesdeLink(doc.link);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error al descargar:', error));
+    });
+  }
+
+  async descargarDocumentosSeleccionados() {
+    const zip = new JSZip();
+
+    this.isDownloading = true; //Spiner para creacion de .ZIP
+
+    const documentosSeleccionados = this.dataSourceDocumentos.data.filter(doc => doc.seleccionado);
+
+    for (const doc of documentosSeleccionados) {
+      try {
+        const response = await fetch(doc.link);
+        const blob = await response.blob();
+        const nombreArchivo = this.obtenerNombreDesdeLink(doc.link); // Obtener nombre real
+        zip.file(nombreArchivo, blob);
+      } catch (error) {
+        console.error(`Error al descargar el archivo: ${doc.nombreArchivo}`, error);
+      }
+    }
+
+    zip.generateAsync({ type: 'blob' }).then((zipBlob) => {
+      saveAs(zipBlob, 'Michoacan.zip');
+      this.isDownloading = false; // Detiene spinner
+    }).catch(() => {
+      this.isDownloading = false; // En caso de error también parar spinner
+    });
+  }
+
+  descargarPDF() {
+    if (!this.pdfSrc) {
+      console.warn('No hay documento seleccionado para descargar');
+      return;
+    }
+    fetch(this.pdfSrc)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('No se pudo descargar el archivo');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = this.obtenerNombreDesdeLink(this.pdfSrc);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Error al descargar el PDF', error);
+      });
+  }
+
+  seleccionActiva: boolean = false; // Modo selección activado o no
+  todosSeleccionados = false; // Estado global de selección
+
+  toggleSeleccionarTodos() {
+    this.todosSeleccionados = !this.todosSeleccionados;
+
+    this.documentosSeleccionados.clear();
+
+    this.dataSourceDocumentos.filteredData.forEach(doc => {
+      doc.seleccionado = this.todosSeleccionados;
+
+      if (this.documentosSeleccionados){
+        this.documentosSeleccionados.add(doc.column);
+      }
+    });
+  }
+  get hayDocumentosSeleccionados(): boolean {
+    return this.dataSourceDocumentos.data.some(doc => doc.seleccionado);
+  }
+
+  toggleSeleccion() {
+    this.seleccionActiva = !this.seleccionActiva;
+    if (!this.seleccionActiva) {
+      this.documentosSeleccionados.clear(); // Limpiar selección al salir del modo
+    }
+  }
+
+  toggleDocumentoSeleccionado(nombreDoc: string) {
+    if (this.documentosSeleccionados.has(nombreDoc)) {
+      this.documentosSeleccionados.delete(nombreDoc);
+    } else {
+      this.documentosSeleccionados.add(nombreDoc);
+    }
+  }
+
+  seleccionarFila(row:any): void {
+    this.filaSeleccionada = row;
   }
 }

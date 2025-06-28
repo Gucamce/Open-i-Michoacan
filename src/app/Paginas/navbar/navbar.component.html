@@ -1,29 +1,37 @@
-<nav class="navbar main-nav fixed-top navbar-expand-lg" style="border-bottom: 5px solid
-#FFC3D0; position: fixed;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="http://localhost/michoacan.gob.mx">
-            <img src="https://michoacan.gob.mx/cdn/img/logo.svg" height="85px;" alt="logo">
-        </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" style="border-bottom: 5px solid #FFC3D0;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost/michoacan.gob.mx">
+      <img src="https://michoacan.gob.mx/cdn/img/logo.svg" height="70" alt="logo">
+    </a>
 
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data- bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria- label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="inicio">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ancla" href="adminusers" role="link">Usuarios</a>
-             
-                <li class="nav-item">
-                    <a class="nav-link" href="login">Salir</a>
-                </li>
-                
-            </ul>
-        </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="inicio">
+            <i class="fas fa-home me-4"></i>Inicio
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="userRole === 1">
+          <a class="nav-link" href="adminusers">
+            <i class="fas fa-users-cog me-4"></i>Usuarios
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="userRole === 1 || userRole === 3">
+          <a class="nav-link" href="login">
+            <i class="fas fa-chart-bar me-4"></i>Reportes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login">
+            <i class="fas fa-sign-out-alt me-4"></i>Salir
+          </a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>

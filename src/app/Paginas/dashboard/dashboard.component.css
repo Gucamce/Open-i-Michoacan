@@ -1,103 +1,133 @@
+:root{
+  outline: none;
+}
 #cabecera {
-    height: 110px;
+  height: 110px;
 }
 
 #cuerpo {
-    display: flex;
-    margin-top: 10px;
-    height: 80%;
-    justify-content: center;
+  display: flex;
+  margin-top: 10px;
+  height: 80%;
+  justify-content: center;
 }
 
 #contenedor-document {
-    border-radius: 10px;
-    margin-left: 10px;
-    height: 100%;
-    box-shadow: 1px 3px 10px #6A0F49;
+  border-radius: 10px;
+  margin-left: 10px;
+  height: 100%;
+  box-shadow: 1px 3px 10px #6A0F49;
+}
+
+.negrita {
+  font-weight: bold;
 }
 
 #dash {
-    margin-top: 20px;
+  margin-top: 20px;
+  height: 600px;
+
 }
 
 #documentos {
-    margin-left: 40px;
-    height: 500px;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
-    border-radius: 10px;
+  margin-left: 40px;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 1px 3px 10px #6A0F49;
+  overflow-y: auto;
 }
 
 #visor {
-    display: block;
-    max-width: fit-content "100%";
+  display: block;
+  max-width: 100%;
+  height: 80%;
+  margin-left: 20px;
+  box-shadow: 1px 3px 10px #6A0F49;
+  border-radius: 10px;
 
-    margin-left: 20px;
-    height: 500px;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
-    border-radius: 10px;
 }
 
 #tabla {
-    height: 70%;
-    width: 100%;
+  height: 70%;
+  width: 100%;
 }
 
 
 .example-viewport {
-    width: 230px;
-    height: 500px;
-}
-.ngx-extended-pdf-viewer{
- display: flex;
-    height: 100px;
+  width: 230px;
+  height: 500px;
 }
 
-  .clickable-row:hover {
-    background-color: #e3f2fd; /* celeste claro */
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-  }
+.ngx-extended-pdf-viewer {
+  position: absolute;
+  height: 100px;
+}
 
-  .documento-celda {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-  }
-  
-  .tabla-documentos {
-    background-color: transparent;
-    box-shadow: none;
-    padding: 0;
-    border: none;
-    overflow-y: auto;
+.clickable-row:hover {
+  background-color: #ffc3d0;
+  /* celeste claro */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.documento-celda {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.tabla-documentos {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  border: none;
+  overflow-y: auto;
   text-align: center;
-    
-  }
-  
-  .mat-table {
-    background-color: transparent !important;
-  }
-  
-  .mat-header-row, .mat-row {
-    background-color: transparent !important;
-  }
+
+}
+
+.mat-table {
+  background-color: transparent !important;
+}
+
+.mat-header-row,
+.mat-row {
+  background-color: transparent !important;
+}
+
+.example-viewport {
+  flex: 1;
+  height: 100%;
+  width: 110%;
+  overflow: auto;
+}
 
 
 
 /* Estilos para el árbol de documentos */
-  #arbol {
+#arbol {
   padding: 1rem;
   background-color: #f9f9f9;
   border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   height: 100%;
   overflow-y: auto;
   text-align: center;
   border-radius: 10px;
   box-shadow: 1px 3px 10px #6A0F49;
 }
-.arbol-personalizado{
-    background: transparent !important;
-    border: none;
+
+.arbol-personalizado {
+  background: transparent !important;
+  border: none;
+}
+
+::ng-deep .tree-node-seleccionado .nodo-carpeta {
+  background-color: #6A0F49 !important;
+  border-radius: 4px;
+  color: #ffc3d0 !important;
 }
 
 .titulo-arbol {
@@ -107,27 +137,28 @@
 }
 
 .viewport-arbol {
-  height: calc(100vh - 120px); /* Ajusta según tu diseño */
+  height: calc(100vh - 120px);
+  /* Ajusta según tu diseño */
   overflow-y: auto;
 }
 
 .header-centrado {
   margin-top: 20px;
-    text-align: center;
-    justify-content: center;
-    display: flex;
-    border-bottom: 2px solid #6A0F49;
-  }
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  border-bottom: 2px solid #6A0F49;
+}
 
-  .titulo-arbolrep{
-    border-bottom: 2px solid #6A0F49;
-    justify-content: center;
-    text-align: center;
-    display: flex;
-    padding-bottom: 30px;
-    
-  }
-  
+.titulo-arbolrep {
+  border-bottom: 2px solid #6A0F49;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  padding-bottom: 30px;
+
+}
+
 .nodo-carpeta {
   display: flex;
   align-items: center;
@@ -136,37 +167,30 @@
   cursor: pointer;
   color: #6A0F49;
   transition: color 0.2s ease;
+  width: 100%;
 }
+
 .nodo-carpeta:hover {
   background-color: #6A0F49 !important;
+  width: 100%;
   cursor: pointer;
   color: #ffc3d0;
 }
 
 .nodo-carpeta mat-icon {
-  color: #6A0F49; /* color por defecto */
+  color: #6A0F49;
+  /* color por defecto */
   transition: color 0.2s ease;
+  width: 100%;
 }
 
+
 .nodo-carpeta:hover mat-icon {
-  color: #ffc3d0; /* color al pasar el mouse */
+  color: #ffc3d0;
+  /* color al pasar el mouse */
   text-size-adjust: 0.8rem;
 }
 
-.nodo-seleccionado{
-    background-color: #b2ebf2 !important;
-    font-weight: bold;
-}
-
-.icono-nodo {
-  margin-right: 8px;
-  color: #a6b2f4;
-}
-
-.texto-nodo {
-  flex-grow: 1;
-  color: #333;
-}
 
 .metodo-pago {
   font-size: 0.8rem;
@@ -175,6 +199,310 @@
   margin-left: 4px;
 }
 
-.tabla-sin-fondo{
+.tabla-scroll-vertical {
+  max-height: 600px;
+  /* Ajusta la altura para mostrar 15 filas aprox. */
   overflow-y: auto;
+  border: none;
+}
+
+.tabla-documentos {
+  width: 100%;
+  border-bottom: 2px solid #6A0F49;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+.tabla-documentos th {
+  height: 50px;
+}
+
+.tabla-documentos td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #6A0F49;
+}
+
+.seleccionado {
+  background-color: #ffc3d0 !important;
+  font-weight: bold;
+  color: #6A0F49;
+}
+
+.nombre-documento {
+  color: #6A0F49;
+  /* Azul oscuro, por ejemplo */
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+
+/* Opcional: mejora de legibilidad en pantallas pequeñas */
+@media (max-width: 768px) {
+
+  .tabla-documentos th,
+  .tabla-documentos td {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+
+::ng-deep .custom-dialog-container .mat-dialog-content {
+  overflow: hidden;
+  padding: 0;
+}
+
+ngx-extended-pdf-viewer {
+  height: 80vh;
+  display: block;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-icon i {
+  font-size: 1.5rem;
+  color: #6A0F49;
+  /* azul Material Design */
+  transition: color 0.2s ease;
+  border-radius: none;
+}
+
+.btn-icon:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+  /* azul transparente */
+}
+
+.btn-icon:hover i {
+  color: #ffc3d0;
+  /* hover */
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.acciones-tabla {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background-color: #f1f1f1;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  border-radius: 4px;
+}
+
+.acciones-contenido {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: none;
+  margin-top: 20px;
+  gap: 15px;
+  width: 100%;
+}
+
+.filtro-tabla {
+  flex: 1 1 300px;
+  min-width: 200px;
+}
+
+.seleccionar-todos {
+  white-space: nowrap;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.spinner-css {
+  border: 5px solid #ccc;
+  border-top: 5px solid #6A0F49;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*Visor PDF*/
+
+@media (max-width: 768px) {
+
+  .visor-header {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0.5rem 1rem;
+    background-color: #f5f5f5;
+    height: 20%;
+  }
+
+  .titulo-pdf {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #6A0F49;
+  }
+
+  .sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .nombre-documento {
+    font-size: 1rem;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+  }
+
+  .btn-descargar {
+    color: #6A0F49;
+  }
+
+  .btn-descargar:hover {
+    color: #ffc3d0;
+
+  }
+
+  button.btn-descargar:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent;
+    border: none;
+  }
+
+}
+
+/* Visor de PDF */
+
+.visor-header {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0.5rem 1rem;
+  background-color: #f5f5f5;
+  height: 100px;
+}
+
+.titulo-pdf {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #6A0F49;
+}
+
+.sub-header {
+  display: flex;
+  margin-bottom: 2px solid #ffc3d078;
+  border-radius: 4px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.nombre-documento {
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+.btn-descargar {
+  color: #6A0F49;
+} 
+
+::ng-deep .mat-mdc-icon-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-descargar:hover {
+  color: #ffc3d0;
+  box-shadow: 0 0 0 2px #ffc3d0;
+  background-color: #6A0F49;
+}
+
+
+.full-screen-modal .mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 0 !important;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+ngx-extended-pdf-viewer {
+  width: 100%;
+  height: 100%;
+}
+
+.column {
+  cursor: pointer;
+}
+
+.fila-seleccionada {
+  background-color: #6A0F49 !important; /* verde claro */
+  color: #ffc3d0;
+  transition: background-color 0.3s ease;
+}
+
+
+
+.fila-documento:hover {
+  background-color: #6A0F49; /* puedes usar otro color más visible si lo deseas */
+  color: #ffc3d0;
+  cursor: pointer;
+}
+
+
+.mat-row:hover {
+  background-color: #6A0F49 !important; /* verde muy claro */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.icono-no-seleccionado {
+  color: #6A0F49 !important;
+}
+
+.icono-seleccionado {
+  color: #ffc3d0; /* rojo fuerte, o el color que prefieras */
+}
+
+.col-seleccion{
+  background: white;
+
+  min-width: 60px;
+  max-width: 100px;
+  text-align: center;
 }

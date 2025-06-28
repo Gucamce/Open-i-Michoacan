@@ -15,15 +15,10 @@ export class LoginService {
         // Constructor logic here
     }
 
-    // Listado de Oficinas Completo
-    obtenerOficinas(): Observable<any> {
-        return this.http.get<any>('http://gemnwpiq.michoacan.gob.mx:51000');
-    }
-
     // Example method
     login(userName: any, password: string): Observable<any> {
         // Implement your login logic here
-        debugger
+
         let json = {
             userName: userName, password: password
         };

@@ -1,7 +1,7 @@
 
-
 #cabecera {
     height: 110px;
+
 }
 
 #cuerpo {
@@ -52,26 +52,6 @@
     width: 100%;
 }
 
-.example-tree-invisible {
-    display: none;
-}
-
-.example-tree ul,
-.example-tree li {
-    margin-top: 0;
-    margin-bottom: 0;
-    list-style-type: none;
-}
-
-.example-tree .mat-nested-tree-node div[role=group] {
-    padding-left: 20px;
-}
-
-
-.example-tree div[role=group]>.mat-tree-node {
-    padding-left: 20px;
-}
-
 #dash {
     padding: 2rem;
     justify-content: center;
@@ -80,7 +60,17 @@
 #documentos {
     width: 80%;
     height: 500px;
-    box-shadow: 1px 3px 10px rgb(205, 205, 205);
     border-radius: 10px;
     text-align: center;
+}
+
+.fila-hover-focus:hover,
+.fila-hover-focus:focus,
+.fila-hover-focus.cdk.focused,
+.fila-hover-focus.cdk-keyboard-focused
+ {
+background-color: #6A0F49 !important;
+color: #ffc3d0 !important;
+cursor: pointer;
+outline: none;
 }

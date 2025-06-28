@@ -1,3 +1,4 @@
 *:root{
-    position: fixed;
+    display: flex;
+    position: block;
 }

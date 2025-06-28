@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh; /* Altura total de la pantalla */
-
   
 }
 html,
@@ -12,6 +11,7 @@ body {
     height: 100%;
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    
 }
 
 .mat-button-toggle-group
@@ -94,4 +94,49 @@ h4, h6 {
   margin: 0;
   color: #944040;
   background-color: transparent;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px; /* Ajusta la altura según tu contenido */
+  background-color: #f8f9fa; /* Asegúrate de poner un color de fondo */
+  z-index: 1000;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+/* Espaciado para que el contenido no quede debajo del footer */
+router-outlet + * {
+  padding-bottom: 70px; /* un poco más que el height del footer */
+}
+
+/* Asegura que el contenedor overlay de Angular Material tenga prioridad */
+.cdk-overlay-container {
+  z-index: 2000 !important;
+}
+
+/* Estilo personalizado del dialog */
+.custom-dialog-container {
+  z-index: 2100 !important;
+}
+
+::ng-deep .checkbox-blanco.mat-checkbox-checked .mat-checkbox-background,
+::ng-deep .checkbox-blanco .mat-checkbox-background {
+  background-color: white !important;
+}
+
+::ng-deep .checkbox-blanco.mat-checkbox-checked .mat-checkbox-checkmark-path {
+  stroke: black !important;
+}
+
+::ng-deep .checkbox-blanco .mat-checkbox-frame {
+  border-color: white !important;
+}
+
+::ng-deep mat-checkbox.checkbox-blanco {
+  --mdc-checkbox-selected-icon-color: white;
+  --mdc-checkbox-unselected-icon-color: white;
+  --mdc-checkbox-selected-hover-icon-color: white;
 }
