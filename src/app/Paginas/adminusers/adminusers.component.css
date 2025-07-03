@@ -1,0 +1,34 @@
+/* Nueva clase que envuelve y aplica zoom */
+.zoom-wrapper {
+    display: flex;
+    margin-top: 100px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+}
+
+.zoom-wrapper>#contenedor-document {
+    transform: scale(0.8);
+    transform-origin: top center;
+}
+
+#contenedor-document {
+    border-radius: 10px;
+    box-shadow: 1px 3px 10px #6A0F49;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#dash {
+    display: flex;
+    justify-content: center;
+}
+
+#dash .col-11 { 
+    float: none;
+}
+

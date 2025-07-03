@@ -86,7 +86,7 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
     private oficinaService: OficinaServices,
     private fb: FormBuilder,
   ) { }
-  
+
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -100,7 +100,7 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
       idRol: ['', Validators.required],
       sucursales: [''],
     });
-    
+
     this.miFormulario.get('name')?.valueChanges.subscribe(() => {
       this.generarNombreUsuario();
     });
@@ -108,26 +108,26 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
       this.generarNombreUsuario();
     });
     this.miFormulario.get('idRol')?.valueChanges.subscribe((valor) => {
-      if(valor === 'Administrador' || valor === 'Auditor') {
+      if (valor === 'Administrador' || valor === 'Auditor') {
         this.seleccionarTodos();
-        
+
       } else {
         this.oficinasSeleccionadas = [];
       }
       console.log('Rol seleccionado:', valor);
       console.log('Oficinas seleccionadas:', this.oficinasSeleccionadas);
-      
-      
+
+
     })
   }
-  private respaldoSeleccion: any[]=[]
+  private respaldoSeleccion: any[] = []
 
-  generarNombreUsuario():void {
+  generarNombreUsuario(): void {
     const name = this.miFormulario.get('name')?.value || '';
     const lastName = this.miFormulario.get('lastName')?.value || '';
-    if(name && lastName){
-      const sugerencia = `${name.charAt(0)}${lastName}`.toLowerCase().replace(/\s+/g,'');
-      this.miFormulario.get('userName')?.setValue(sugerencia, {emitEvent:false});
+    if (name && lastName) {
+      const sugerencia = `${name.charAt(0)}${lastName}`.toLowerCase().replace(/\s+/g, '');
+      this.miFormulario.get('userName')?.setValue(sugerencia, { emitEvent: false });
     }
   }
   getBranches(): void {
@@ -145,12 +145,25 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
 
   }
 
-  seleccionarTodos():void{
+  seleccionarTodos(): void {
     this.oficinasSeleccionadas = [...this.oficinasOriginal];
+  }
+  todasSeleccionadas: boolean = false;
+
+  toggleSeleccionarTodas(): void {
+    if (this.todasSeleccionadas) {
+
+      //Deselecciona todas
+      this.oficinasSeleccionadas = [];
+    } else {
+      //Selecciona todas
+      this.oficinasSeleccionadas = [...this.oficinasFiltradas];
+    }
+    this.todasSeleccionadas = !this.todasSeleccionadas;
   }
 
 
-  
+
   abrirModal() {
     this.respaldoSeleccion = [...this.oficinasSeleccionadas];
     const modalElement = document.getElementById('modalOficinas');
@@ -162,13 +175,13 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
       bootstrapModal.show();
     }
   }
-  
+
   estaSeleccionada(oficina: any): boolean {
     return this.oficinasSeleccionadas.some(o => o.office === oficina.office);
   }
 
   toggleOficina(oficina: any, checked: boolean): void {
-    
+
     if (checked) {
       if (!this.oficinasSeleccionadas.some(o => o.office === oficina.office)) {
         this.oficinasSeleccionadas.push(oficina);
@@ -177,17 +190,17 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
       this.oficinasSeleccionadas = this.oficinasSeleccionadas.filter(o => o.office !== oficina.office);
     }
     console.log('Oficinas seleccionadas:', this.oficinasSeleccionadas);
-    
+
   }
 
   eliminarOficina(oficina: any): void {
     this.oficinasSeleccionadas = this.oficinasSeleccionadas.filter(o => o.office !== oficina.office);
   }
 
-  cancelarSeleccion(): void{
+  cancelarSeleccion(): void {
     this.oficinasSeleccionadas = [...this.respaldoSeleccion];
     const modalElement = document.getElementById('modalOficinas');
-    if(modalElement){
+    if (modalElement) {
       const modalInstance = (window as any).bootstrap.Modal.getInstance(modalElement);
       modalInstance?.hide();
     }
@@ -196,11 +209,11 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
     if (this.miFormulario.invalid) {
       this.miFormulario.markAllAsTouched();
       return;
-      
-    } 
-    
+
+    }
+
     if (this.oficinasSeleccionadas.length === 0) {
-      alert ('Debes seleccionar al menos una oficina');
+      alert('Debes seleccionar al menos una oficina');
       return;
     }
 
@@ -208,46 +221,46 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
     const lastName = this.miFormulario.get('lastName')?.value;
     const password = this.miFormulario.get('password')?.value;
     const userName = this.miFormulario.get('userName')?.value;
-    
-    const idRolTexto = this.miFormulario.get('idRol')?.value;
-    const idRol = this.obtenerIdRol (idRolTexto);
 
-    const sucursales = this.oficinasSeleccionadas.map (o => o.office).join(',');
+    const idRolTexto = this.miFormulario.get('idRol')?.value;
+    const idRol = this.obtenerIdRol(idRolTexto);
+
+    const sucursales = this.oficinasSeleccionadas.map(o => o.office).join(',');
 
     const payload: NuevoUsuario = {
       userName,
       password,
       name,
       lastName,
-      idRol: String (idRol),
+      idRol: String(idRol),
       sucursales,
     };
 
     console.log('Enviando al back:', payload);
-    
+
     this.oficinaService.registroUsuario(payload)
-    .subscribe({
-      next: (res) => {
-        console.log('Usuario registrado correctamente:', res);
-       this.cancelarFormulario();
-      },
-      error: (err: any) => {
-        console.error('Error al registrar usuario:', err);
-      }
-    });
+      .subscribe({
+        next: (res) => {
+          console.log('Usuario registrado correctamente:', res);
+          this.cancelarFormulario();
+        },
+        error: (err: any) => {
+          console.error('Error al registrar usuario:', err);
+        }
+      });
   }
 
   obtenerIdRol(idRol: string): number {
-    switch (idRol){
+    switch (idRol) {
       case 'Administrador':
         return 1;
-        case 'Auditor':
-          return 3;
-          case 'Cajero':
-            return 2;
+      case 'Auditor':
+        return 3;
+      case 'Cajero':
+        return 2;
 
-            default:
-              return 0;
+      default:
+        return 0;
     }
   }
 
@@ -280,8 +293,8 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
 
   guardarSeleccion(): void {
     const modalElement = document.getElementById('modalOficinas');
-    if (modalElement){
-      const modalInstance = (window as any). bootstrap.Modal.getInstance(modalElement);
+    if (modalElement) {
+      const modalInstance = (window as any).bootstrap.Modal.getInstance(modalElement);
       modalInstance?.hide();
     }
 
@@ -292,7 +305,7 @@ export class AdminusersComponent implements AfterViewInit, OnInit {
   }
   cancelarFormulario(): void {
     this.miFormulario.reset();
-    this.oficinasSeleccionadas =[...this.respaldoSeleccion];
+    this.oficinasSeleccionadas = [...this.respaldoSeleccion];
   }
 
 

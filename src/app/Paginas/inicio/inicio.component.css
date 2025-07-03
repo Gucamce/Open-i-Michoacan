@@ -1,78 +1,50 @@
-/* Quitar scroll general */
-body {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-body::-webkit-scrollbar {
-  display: none;
-}
-
-/* Nueva clase que envuelve y aplica zoom */
+/* Contenedor principal que aplica zoom y centra contenido */
 .zoom-wrapper {
-  width: 100%;
+  margin-top: 100px;
   display: flex;
+  margin-top: 100px;
   justify-content: center;
+  align-items: flex-start;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
+/* Escala interna sin romper el centrado */
 .zoom-wrapper > #contenedor-document {
   transform: scale(0.7);
   transform-origin: top center;
 }
 
-#cabecera {
-    height: 110px;
-}
-
-#cuerpo {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Alineado superior */
-  flex-wrap: wrap;         /* Permite que el árbol y el contenido se acomoden mejor */
-  margin-top: 10px;
-  padding: 1rem;
-  height: auto;            /* Ajustable según contenido */
-
-}
-
-
+/* Contenedor del documento */
 #contenedor-document {
   border-radius: 10px;
-  margin-left: 10px;
-  height: 100%;
   box-shadow: 1px 3px 10px #6A0F49;
-  max-width: 900px;
+  background-color: white;
+  max-width: 1000px;
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
 }
 
+/* Estilo para la sección de cajero */
 #componente-tabla {
-    display: block;
-    text-align: center;
-    height: 100%;
-    width: 100%;
+  text-align: center;
+  width: 100%;
 }
 
+/* Espaciado general del dashboard */
 #dash {
-    padding: 2rem;
-    justify-content: center;
+  padding: 2rem;
 }
 
-#documentos {
-    width: 80%;
-    height: 500px;
-    border-radius: 10px;
-    text-align: center;
-}
-
+/* Hover/focus personalizado para filas */
 .fila-hover-focus:hover,
 .fila-hover-focus:focus,
 .fila-hover-focus.cdk.focused,
-.fila-hover-focus.cdk-keyboard-focused
- {
-background-color: #6A0F49 !important;
-color: #ffc3d0 !important;
-cursor: pointer;
-outline: none;
+.fila-hover-focus.cdk-keyboard-focused {
+  background-color: #6A0F49 !important;
+  color: #ffc3d0 !important;
+  cursor: pointer;
+  outline: none;
 }

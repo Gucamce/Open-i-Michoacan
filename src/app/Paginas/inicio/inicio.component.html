@@ -1,62 +1,55 @@
 <body>
+  <!-- Cuerpo principal centrado -->
+  <div class="zoom-wrapper">
+    <div id="contenedor-document">
+      <div id="dash" class="row justify-content-center">
+        <div class="col-11">
 
-  <div class="row" id="cabecera"></div>
+          <!-- Cajero -->
+          <div *ngIf="type === 2" id="componente-tabla">
+            <h5 class="titulo-oficina">Oficinas</h5>
+            <app-ofitab></app-ofitab>
+          </div>
 
-  <div class="row" id="cuerpo">
-    
+          <!-- Admin y Auditor -->
+          <div *ngIf="type === 1 || type === 3" class="text-center">
+            <div class="w-100">
 
-    <!-- Contenedor con escala en un wrapper -->
-    <div class="zoom-wrapper">
-      <div id="contenedor-document">
-        <div class="row" id="dash">
-          <div class="col-11">
-
-            <!-- Usuario Cajero (type = 2) -->
-            <div id="componente-tabla" style="margin-top: 20px;" *ngIf="type === 2">
               <h5 class="titulo-oficina">Oficinas</h5>
-              <app-ofitab></app-ofitab>
-            </div>
 
-            <!-- Usuario Admin (1) y Auditor (3) -->
-            <div *ngIf="type === 1 || type === 3" class="d-flex justify-content-center text-center">
-              <div class="w-100" style="max-width: 100%;">
-                <h5 class="titulo-oficina">Oficinas</h5>
+              <mat-form-field appearance="fill" class="w-100 mb-3">
+                <mat-label>Buscar oficina...</mat-label>
+                <input matInput (input)="applyFilter($event)" placeholder="Escribe un nombre o ID">
+              </mat-form-field>
 
-                <mat-form-field appearance="fill" class="w-100 mb-3">
-                  <mat-label>Buscar oficina...</mat-label>
-                  <input matInput (input)="applyFilter($event)" placeholder="Escribe un nombre o ID">
-                </mat-form-field>
+              <div class="mat-elevation-z2 tabla-scroll">
+                <table mat-table [dataSource]="dataSource" class="table table-hover mat-table">
 
-                <div class="mat-elevation-z2 tabla-scroll">
-                  <table mat-table [dataSource]="dataSource" class="table table-hover mat-table">
+                  <ng-container matColumnDef="office">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let oficina">{{ oficina.office }}</td>
+                  </ng-container>
 
-                    <ng-container matColumnDef="office">
-                      <th mat-header-cell *matHeaderCellDef>ID</th>
-                      <td mat-cell *matCellDef="let oficina">{{ oficina.office }}</td>
-                    </ng-container>
+                  <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                    <td mat-cell *matCellDef="let oficina">{{ oficina.description }}</td>
+                  </ng-container>
 
-                    <ng-container matColumnDef="description">
-                      <th mat-header-cell *matHeaderCellDef>Descripción</th>
-                      <td mat-cell *matCellDef="let oficina">{{ oficina.description }}</td>
-                    </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="seleccionarOficina(row)"
+                    class="fila-hover-focus">
+                  </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                        (click)="seleccionarOficina(row)"
-                        class="fila-hover-focus">
-                    </tr>
-                  </table>
+                </table>
 
-                  <mat-paginator [pageSize]="6" showFirstLastButtons></mat-paginator>
-                </div>
+                <mat-paginator [pageSize]="6" showFirstLastButtons></mat-paginator>
               </div>
             </div>
-
           </div>
+
         </div>
       </div>
     </div>
-
   </div>
 
 </body>
