@@ -1,5 +1,5 @@
 export const environment = {
   mensaje: 'Local',
-  apiurl: 'http://ec2-18-189-182-146.us-east-2.compute.amazonaws.com',
+  apiurl: 'https://ec2-18-189-182-146.us-east-2.compute.amazonaws.com',
   
 }
