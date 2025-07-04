@@ -1,7 +1,7 @@
 /* Nueva clase que envuelve y aplica zoom */
 .zoom-wrapper {
     display: flex;
-    margin-top: 100px;
+    margin-top: 120px;
     width: 100vw;
     display: flex;
     justify-content: center;
