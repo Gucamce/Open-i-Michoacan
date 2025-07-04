@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { OfitabComponent } from '../ofitab/ofitab.component';
 import { OficinaServices } from '../../Servicios/oficinas.services';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 
 export interface UserData {
@@ -27,7 +27,8 @@ export interface UserData {
     MatPaginatorModule,
     FormsModule,
     CommonModule,
-    OfitabComponent
+    OfitabComponent,
+    RouterModule,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from '../../Servicios/login.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,7 @@ import { MatSnackBar, MatSnackBarModule }from '@angular/material/snack-bar';
     MatButtonModule,
     MatSnackBarModule,
     CommonModule,
+    RouterModule,
   ],
   
 })
