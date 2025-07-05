@@ -23,7 +23,7 @@ export class OficinaServices {
     }
 
     arbolDocument(json: any): Observable<any> {
-        return this.http.post(`${url}/document/filter`, json, { headers: this.getAuthHeaders() });
+        return this.http.post(`${url}/viewer`, json, { headers: this.getAuthHeaders() });
     }
 
     getBranches(): Observable<any> {
