@@ -1,0 +1,20 @@
+{
+    "/viewer": {
+        "target": "http://ec2-18-189-182-146.us-east-2.compute.amazonaws.com:8086",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/document": {
+        "target": "http://ec2-18-189-182-146.us-east-2.compute.amazonaws.com:8086",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/user": {
+        "target": "http://ec2-18-189-182-146.us-east-2.compute.amazonaws.com:8086",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}
