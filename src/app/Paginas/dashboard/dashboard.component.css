@@ -1,25 +1,10 @@
-.zoom {
-  transform: scale(0.75);
-  transform-origin: top center;
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  overflow: visible;
-}
-
-#cabecera {
-  height: 110px;
-}
-
 #cuerpo {
   display: flex;
+  margin-top: 70px; /* Espacio para el header */
   justify-content: center;
   align-items: stretch; /* Alineado superior */
   flex-wrap: nowrap;         /* Permite que el árbol y el contenido se acomoden mejor */
-  margin-top: 10px;
-  padding: 1rem;
   height: auto;            /* Ajustable según contenido */
-
 }
 
 #contenedor-document {
@@ -28,6 +13,7 @@
   margin-left: 10px;
   height: auto;
   flex-direction: column;
+  background-color: white;
   box-shadow: 1px 3px 10px #6A0F49;
 }
 
@@ -36,7 +22,6 @@
 }
 
 #dash {
-  margin-top: 20px;
   height: 600px;
 
 }
@@ -513,4 +498,25 @@ ngx-extended-pdf-viewer {
   max-height: 80vh;
   overflow-y: auto;
   width: 100%;
+}
+
+/* Contenedor principal centrado */
+.contenedor-central {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e8e7e7;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+/* Caja blanca tipo login */
+.contenedor-card {
+  width: 100%;
+  max-width: 2500px;
+  border-radius: 2rem;
+  padding: 0rem;
+  transform: scale(0.70);
+  transform-origin: center;
 }

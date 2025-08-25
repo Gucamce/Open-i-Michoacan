@@ -1,43 +1,3 @@
-/* Contenedor principal que aplica zoom y centra contenido */
-.zoom-wrapper {
-  margin-top: 100px;
-  display: flex;
-  margin-top: 100px;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Escala interna sin romper el centrado */
-.zoom-wrapper > #contenedor-document {
-  transform: scale(0.7);
-  transform-origin: top center;
-}
-
-/* Contenedor del documento */
-#contenedor-document {
-  border-radius: 10px;
-  box-shadow: 1px 3px 10px #6A0F49;
-  background-color: white;
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-/* Estilo para la sección de cajero */
-#componente-tabla {
-  text-align: center;
-  width: 100%;
-}
-
-/* Espaciado general del dashboard */
-#dash {
-  padding: 2rem;
-}
-
 /* Hover/focus personalizado para filas */
 .fila-hover-focus:hover,
 .fila-hover-focus:focus,
@@ -47,4 +7,26 @@
   color: #ffc3d0 !important;
   cursor: pointer;
   outline: none;
+}
+
+/* Contenedor principal centrado */
+.contenedor-central {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e8e7e7;
+  padding: 1rem;
+}
+
+/* Caja blanca tipo login */
+.contenedor-card {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #f8f9fa;
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transform: scale(0.7);
+  transform-origin: center;
 }

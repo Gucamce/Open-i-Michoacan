@@ -61,9 +61,9 @@
             },
             "development": {
               "outputHashing": "all",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
