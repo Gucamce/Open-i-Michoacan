@@ -1,3 +1,21 @@
+# version: 1
+# frontend:
+#   phases:
+#     preBuild:
+#       commands:
+#         - npm ci
+#     build:
+#       commands:
+#         - 'echo "export const environment = { mensaje: ''Amplify'', apiurl: ''$API_URL'' };" > src/environments/environment.prod.ts'
+#         - npm run build -- --configuration=production
+#   artifacts:
+#     baseDirectory: dist/oi-mich_rdddi/browser
+#     files:
+#       - '**/*'
+#   cache:
+#     paths:
+#       - node_modules/**/*
+
 version: 1
 frontend:
   phases:
@@ -6,10 +24,19 @@ frontend:
         - npm ci
     build:
       commands:
-        - 'echo "export const environment = { mensaje: ''Amplify'', apiurl: ''$API_URL'' };" > src/environments/environment.prod.ts'
+        - |
+          cat > src/environments/environment.prod.ts <<EOF
+          export const environment = {
+            production: true,
+            mensaje: 'Amplify',
+            apiurl: '${API_URL}'
+          };
+          EOF
         - npm run build -- --configuration=production
+        # Si sirves en raíz, puedes forzar base-href/deploy-url:
+        # - npm run build -- --configuration=production --base-href=/ --deploy-url=/
   artifacts:
-    baseDirectory: dist/oi-mich_rdddi
+    baseDirectory: dist/oi-mich_rdddi/browser
     files:
       - '**/*'
   cache:
