@@ -64,7 +64,7 @@ interface ArbolNode {
     FormsModule,
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 
 export class DashboardComponent implements OnInit {
@@ -128,6 +128,7 @@ export class DashboardComponent implements OnInit {
     private oficinasSrv: OficinaServices,
     private dialog: MatDialog
   ) { }
+  
 
   ngOnInit(): void {
     const stored = localStorage.getItem("BRANCHES");
@@ -386,7 +387,7 @@ export class DashboardComponent implements OnInit {
       .join(' ');
   }
 
-  columnaBase: string[] = ['seleccion', 'column', 'methodPay', 'station', 'fullDate', 'ver'];
+  columnaBase: string[] = ['seleccion', 'column', 'methodPay', 'station', 'fullDate', 'ver']; //Falta 'seleccion' al inicio.
   columnaVisible: string [] = [];
 
   actualizarColumnasVisibles() {
@@ -449,32 +450,45 @@ export class DashboardComponent implements OnInit {
 
   async descargarDocumentosSeleccionados() {
     const zip = new JSZip();
-
     this.isDownloading = true; //Spiner para creacion de .ZIP
 
-    const documentosSeleccionados = this.dataSourceDocumentos.data.filter(doc => doc.seleccionado);
+    let documentosSeleccionados = this.dataSourceDocumentos.data.filter(doc => doc.seleccionado);
 
-    for (const doc of documentosSeleccionados) {
+    if (documentosSeleccionados.length > 10){
+      documentosSeleccionados = documentosSeleccionados.slice(0, 10);
+      alert ("Se descargaran solo los primeros 10 documentos.");
+    }
       try {
-        const response = await fetch(doc.link);
-        const blob = await response.blob();
-        const nombreArchivo = this.obtenerNombreDesdeLink(doc.link); // Obtener nombre real
-        zip.file(nombreArchivo, blob);
+        const oficina = this.oficinaSeleccionada?.office || 'Oficina';
+        const descripcionOficina = this.oficinaSeleccionada?.description || 'Descripcion';
+        
+        const tareas = documentosSeleccionados.map(async (doc) => {
+          try {
+            const response = await fetch(doc.link);
+            const blob = await response.blob();
+            const nombreArchivo = `${doc.column || 'documento'}`; // Obtener nombre real
+            zip.file(nombreArchivo, blob);
+          
+          } catch (error) {
+            console.error(`Error al descargar el archivo: ${doc.nombreArchivo}`, error);
+          }
+        });
+        //Espera a que descarguen todos los archivos
+        await Promise.all(tareas);
+        //Genera el ZIP
+        const nombreZip = `${oficina}-${descripcionOficina}.zip`;
+        const zipBlob = await zip.generateAsync({ type: 'blob'});
+        
+        saveAs(zipBlob, nombreZip);
       } catch (error) {
-        console.error(`Error al descargar el archivo: ${doc.nombreArchivo}`, error);
+        console.error('Error generando ZIP:', error);
+      } finally { 
+        this.isDownloading = false; // En caso de error también parar spinner
       }
     }
 
-    zip.generateAsync({ type: 'blob' }).then((zipBlob) => {
-      saveAs(zipBlob, 'Michoacan.zip');
-      this.isDownloading = false; // Detiene spinner
-    }).catch(() => {
-      this.isDownloading = false; // En caso de error también parar spinner
-    });
-  }
-
   descargarPDF() {
-    if (!this.pdfSrc) {
+    if (!this.pdfSrc || !this.documentoActual) {
       console.warn('No hay documento seleccionado para descargar');
       return;
     }
@@ -489,7 +503,7 @@ export class DashboardComponent implements OnInit {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = this.obtenerNombreDesdeLink(this.pdfSrc);
+        link.download = this.documentoActual.column || 'documento.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -103,7 +103,6 @@ export class RegistroComponent {
       lastName: formData.apellido,
       userName: formData.email,
       type: formData.idRol,
-      password: formData.password || undefined,
     };
 
     this.oficinaServices.editarUsuario(usuarioActualizado).subscribe({

@@ -1,10 +1,10 @@
 /* Hover/focus personalizado para filas */
 .fila-hover-focus:hover,
-.fila-hover-focus:focus,
-.fila-hover-focus.cdk.focused,
-.fila-hover-focus.cdk-keyboard-focused {
+.fila-hover-focus:focus td.mat-cell,
+.fila-hover-focus.cdk.focusedtd.mat-cell,
+.fila-hover-focus.cdk-keyboard-focused td.mat-cell{
   background-color: #6A0F49 !important;
-  color: #ffc3d0 !important;
+  color: thistle;
   cursor: pointer;
   outline: none;
 }

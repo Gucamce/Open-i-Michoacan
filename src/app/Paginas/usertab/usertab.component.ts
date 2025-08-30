@@ -71,11 +71,12 @@ export class UsertabComponent implements OnInit, AfterViewInit {
       data: usuario
     });
     console.log(`Editar, respuesta:`, RegistroComponent);
-
+    console.log(`Usuario a editar:`, usuario);
+    
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.oficinaServices.getUsuarios().subscribe(resp => {
-          console.log('Usuario editado:', resp);
+        this.oficinaServices.getUsuarios().subscribe(result => {
+          console.log('Usuario editado:', result);
           this.dataSource.data = this.dataSource.data.map(user => user.id === result.id ? result : user);
         });
       }
