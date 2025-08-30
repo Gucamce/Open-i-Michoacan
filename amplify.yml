@@ -6,7 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - echo "export const environment = { mensaje: 'Amplify', apiurl: '$API_URL' };" > src/environments/environment.prod.ts
+        - 'echo "export const environment = { mensaje: ''Amplify'', apiurl: ''$API_URL'' };" > src/environments/environment.prod.ts'
         - npm run build -- --configuration=production
   artifacts:
     baseDirectory: dist/oi-mich_rdddi
