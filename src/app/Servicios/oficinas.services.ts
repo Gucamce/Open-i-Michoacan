@@ -18,7 +18,7 @@ export class OficinaServices {
         const token = localStorage.getItem("TK");
         return new HttpHeaders ({
             'Authorization': `Bearer ${token}`,
-            'Content-type': 'application/json'
+            'Content-type': 'application/javascript'
         });
     }
 
@@ -26,8 +26,13 @@ export class OficinaServices {
         return this.http.post(`${url}/document/filter`, json, { headers: this.getAuthHeaders() });
     }
 
-    // obtenerDocumentos(): Observable<any> {
-    //     return this.http.get<any>(`${environment.apiurl}/viewer`, { headers: this.getAuthHeaders() });
+    // obtenerPDF(documento: any): Observable<Blob> {
+    //     const headers = this.getAuthHeaders();
+
+    //     return this.http.post(`${environment.apiurl}/document/filter`, documento, { 
+    //         headers,
+    //         responseType: 'blob'
+    //     });
     // }
 
     getBranches(): Observable<any> {

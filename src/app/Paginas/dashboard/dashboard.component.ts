@@ -313,7 +313,7 @@ export class DashboardComponent implements OnInit {
   }
 
   mostrarPDF(documento: any) {
-    if (documento) {
+    if (documento?.link) {
       this.pdfSrc = documento.link;
       this.documentoActual = documento;
 
@@ -323,6 +323,8 @@ export class DashboardComponent implements OnInit {
         maxWidth: '100vw',
         panelClass: 'full-screen-modal'
       });
+    } else {
+      console.warn('El documento no tiene un link válido');
     }
   }
 
