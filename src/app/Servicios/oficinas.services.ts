@@ -18,7 +18,7 @@ export class OficinaServices {
         const token = localStorage.getItem("TK");
         return new HttpHeaders ({
             'Authorization': `Bearer ${token}`,
-            'Content-type': 'application/javascript'
+            'Content-type': 'application/json'
         });
     }
 
